@@ -27,7 +27,6 @@ class Picture extends React.Component{
                     })
                 }}
                 onMouseOut={()=>{
-                    console.log(this.state.hiddenTextSize);
                     this.setState({
                         opacity: 0,
                         signOpacity: 0,

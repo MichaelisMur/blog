@@ -1,16 +1,13 @@
 import React from 'react';
-import Picture from './Picture';
-import Comments from './Comments';
+import Picture from '../Picture';
 
-class Post200 extends React.Component{
+class Post301 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             sign: props.sign,
             img: props.img,
-            comments: props.comments,
             header: props.header,
-            yourComment: "",
             hiddenColor: props.hiddenColor,
             hiddenColorOpacity: props.hiddenColorOpacity,
             hiddenText: props.hiddenText,
@@ -34,7 +31,9 @@ class Post200 extends React.Component{
                         hiddenTextSize={this.state.hiddenTextSize}
                     />
                     <div className="comments">
-                        <Comments data={this.state.comments} />
+                        <div className="logTocomment">
+                            <a href="/">Log in</a> to see comments
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,4 +41,4 @@ class Post200 extends React.Component{
     }
 }
 
-export default Post200;
+export default Post301;

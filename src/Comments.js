@@ -73,7 +73,7 @@ class Comments extends React.Component{
                     ))}
                     </div>
                     <div className="logTocomment">
-                        <a href="">Log in</a> to comment
+                        <a href="/">Log in</a> to comment
                     </div>
                 </div>
             )

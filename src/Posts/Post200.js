@@ -1,6 +1,6 @@
 import React from 'react';
-import Picture from './Picture';
-import Comments from './Comments';
+import Picture from '../Picture';
+import Comments from '../Comments';
 
 class Post200 extends React.Component{
     constructor(props){
@@ -34,7 +34,7 @@ class Post200 extends React.Component{
                         hiddenTextSize={this.state.hiddenTextSize}
                     />
                     <div className="comments">
-                        <Comments data={this.state.comments} shown={0} />
+                        <Comments data={this.state.comments} />
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
-import Picture from './Picture';
+import Picture from '../Picture';
 
-class Post202 extends React.Component{
+class Post302 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -20,17 +20,13 @@ class Post202 extends React.Component{
                         img={this.state.img}
                         hiddenColor={"gray"}
                         hiddenColorOpacity={"0.9"}
-                        hiddenText={"Sorry, you are not allowed to see this post's information :с"}
+                        hiddenText={"You have to authorize to see this post's information"}
                         hiddenTextColor={"lightgray"}
                         hiddenTextSize={"20px"}
                     />
                     <div className="comments">
-                        <div className="restrictedComs">
-                            <img className="restrictedImg" src="https://images.all-free-download.com/images/graphiclarge/lock_icon_6813906.jpg" alt="restircted" />
-                            <div className="restrictedLine">
-                                This post's comments section is not availible for you. Sorry ;)
-                            </div>
-                            
+                        <div className="logTocomment">
+                            <a href="/">Log in</a> to see comments
                         </div>
                     </div>
                 </div>
@@ -39,4 +35,4 @@ class Post202 extends React.Component{
     }
 }
 
-export default Post202;
+export default Post302;

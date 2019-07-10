@@ -1,11 +1,11 @@
 import React from 'react';
-import Post200 from './Post200';
-import Post201 from './Post201';
-import Post202 from './Post202';
-import Post300 from './Post300';
-import Post301 from './Post301';
-import Post302 from './Post302';
-import Post400 from './Post400';
+import Post200 from './Posts/Post200';
+import Post201 from './Posts/Post201';
+import Post202 from './Posts/Post202';
+import Post300 from './Posts/Post300';
+import Post301 from './Posts/Post301';
+import Post302 from './Posts/Post302';
+import Post400 from './Posts/Post400';
 
 class Main extends React.Component{
     constructor(props){
@@ -13,7 +13,7 @@ class Main extends React.Component{
         this.state = {
             data: [
                 {
-                    code: 300,
+                    code: 200,
                     img: "https://imgcomfort.com/Userfiles/Upload/images/illustration-geiranger.jpg",
                     hiddenColor: "red",
                     hiddenColorOpacity: "0.2",
