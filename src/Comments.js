@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class Comments extends React.Component{
     constructor(props){
@@ -73,7 +74,7 @@ class Comments extends React.Component{
                     ))}
                     </div>
                     <div className="logTocomment">
-                        <a href="/">Log in</a> to comment
+                        <Link to="/login">Log in</Link> to comment
                     </div>
                 </div>
             )

@@ -10,6 +10,8 @@ const Logout = (props) => {
                 onMouseOut={props.mouseOut}
                 onClick={()=>{
                     cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
                     window.location = "/";
                 }}
             >

@@ -5,6 +5,9 @@ import Poster from './Poster';
 import Header from './Header';
 import Register from './Register';
 import Login from './Login';
+import New from './New';
+import Get from './Get';
+import Request from './Request';
 import {Switch, Route} from 'react-router-dom';
 // import qs from 'query-string';
 // import Cookies from 'universal-cookie';
@@ -63,7 +66,9 @@ class App extends React.Component{
         <Route path="/about" component={About} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        {/* <Route path="/logout" component={Logout} /> */}
+        <Route path="/new" component={New} />
+        <Route path="/get" component={Get} />
+        <Route path="/request" component={Request} />
         <Route path="/" component={HomePage} />
       </Switch>
     )

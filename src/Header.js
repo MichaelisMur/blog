@@ -23,6 +23,23 @@ class Header extends React.Component{
     mouseOut(e){
         e.target.children[0].style.width="0%"
     }
+    Scroll(){
+        if(window.scrollY>0){
+            document.querySelectorAll(".headerLine").forEach(el=>{
+                el.style.background = "black";
+                el.parentElement.style.color = "black";
+            })
+            document.querySelector(".Header").style.background = "white";
+            document.querySelector(".Header").style.borderBottom = "1px solid rgb(233, 233, 233)";
+        } else {
+            document.querySelectorAll(".headerLine").forEach(el=>{
+                el.style.background = "white";
+                el.parentElement.style.color = "white";
+            })
+            document.querySelector(".Header").style.background = "rgba(0,0,0,0)";
+            document.querySelector(".Header").style.borderBottom = "none";
+        }
+    }
     componentWillMount(){
         if(cookies.get("username")){
             let left = [
@@ -73,6 +90,7 @@ class Header extends React.Component{
                 showLogOut: 0})
         }
     }
+
     render(){
         return(
             <div className="Header">
@@ -110,24 +128,11 @@ class Header extends React.Component{
     }
     componentDidMount(){
         if(document.querySelectorAll(".headerLine")){
-            window.addEventListener("scroll", (e)=>{
-                if(window.scrollY>0){
-                    document.querySelectorAll(".headerLine").forEach(el=>{
-                        el.style.background = "black";
-                        el.parentElement.style.color = "black";
-                    })
-                    document.querySelector(".Header").style.background = "white";
-                    document.querySelector(".Header").style.borderBottom = "1px solid rgb(233, 233, 233)";
-                } else {
-                    document.querySelectorAll(".headerLine").forEach(el=>{
-                        el.style.background = "white";
-                        el.parentElement.style.color = "white";
-                    })
-                    document.querySelector(".Header").style.background = "rgba(0,0,0,0)";
-                    document.querySelector(".Header").style.borderBottom = "none";
-                }
-            })
+            window.addEventListener("scroll", this.Scroll);
         }
+    }
+    componentWillUnmount(){
+        window.removeEventListener("scroll", this.Scroll);
     }
 }
 

@@ -6,7 +6,6 @@ class Post200 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            sign: props.sign,
             img: props.img,
             comments: props.comments,
             header: props.header,

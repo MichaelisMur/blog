@@ -1,11 +1,11 @@
 import React from 'react';
 import Picture from '../Picture';
+import {Link} from 'react-router-dom';
 
 class Post301 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            sign: props.sign,
             img: props.img,
             header: props.header,
             hiddenColor: props.hiddenColor,
@@ -32,7 +32,7 @@ class Post301 extends React.Component{
                     />
                     <div className="comments">
                         <div className="logTocomment">
-                            <a href="/">Log in</a> to see comments
+                        <Link to="/login">Log in</Link> to see comments
                         </div>
                     </div>
                 </div>

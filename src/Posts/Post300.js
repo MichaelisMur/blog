@@ -2,11 +2,10 @@ import React from 'react';
 import Picture from '../Picture';
 import Comments from '../Comments';
 
-class Post200 extends React.Component{
+class Post300 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            sign: props.sign,
             img: props.img,
             comments: props.comments,
             header: props.header,
@@ -42,4 +41,4 @@ class Post200 extends React.Component{
     }
 }
 
-export default Post200;
+export default Post300;

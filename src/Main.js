@@ -5,115 +5,87 @@ import Post202 from './Posts/Post202';
 import Post300 from './Posts/Post300';
 import Post301 from './Posts/Post301';
 import Post302 from './Posts/Post302';
-import Post400 from './Posts/Post400';
+import Post203 from './Posts/Post203';
+import Post303 from './Posts/Post303';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 class Main extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             data: [
-                {
-                    code: 200,
-                    img: "https://imgcomfort.com/Userfiles/Upload/images/illustration-geiranger.jpg",
-                    hiddenColor: "red",
-                    hiddenColorOpacity: "0.2",
-                    hiddenText: "Лучше уж так сдохнуть",
-                    hiddenTextSize: "24px",
-                    hiddenTextColor: "white",
-                    sign: "Ohh shit! A Post!",
-                    header: "02.07.2019 23:20",
-                    comments: [
-                        {
-                            username: "username",
-                            comtext: "his or her superfunny comment"
-                        },
-                        {
-                            username: "creepyshithead",
-                            comtext: "wtf with this comment section"
-                        },
-                        {
-                            username: "michaelis",
-                            comtext: "hey now! that's beautiful))))"
-                        },
-                    ]
-                },
-                {
-                    code: 400,
-                    img: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/large-cat-breed-1553197454.jpg",
-                    hiddenColor: "blue",
-                    hiddenColorOpacity: "0.5",
-                    hiddenText: "Another day older and deeper in debt",
-                    hiddenTextSize: "24px",
-                    hiddenTextColor: "white",
-                    sign: "Ohh shit! A Post!",
-                    header: "02.07.2019 23:20",
-                    comments: [
-                        {
-                            username: "username",
-                            comtext: "his or her superfunny comment"
-                        },
-                        {
-                            username: "michaelis",
-                            comtext: "hey now! that's beautiful))))"
-                        },
-                        {
-                            username: "creepyshithead",
-                            comtext: "wtf with this comment section"
-                        },
-                    ]
-                },
-                {
-                    code: 301,
-                    img: "https://upload.wikimedia.org/wikipedia/commons/6/66/An_up-close_picture_of_a_curious_male_domestic_shorthair_tabby_cat.jpg",
-                    hiddenColor: "green",
-                    hiddenColorOpacity: "0.5",
-                    hiddenText: "hidden text",
-                    hiddenTextSize: "30px",
-                    hiddenTextColor: "black",
-                    sign: "Ohh shit! A Post!",
-                    header: "02.07.2019 23:20",
-                    comments: [
-                        {
-                            username: "username",
-                            comtext: "his or her superfunny comment"
-                        },
-                        {
-                            username: "creepyshithead",
-                            comtext: "wtf with this comment section"
-                        },
-                        {
-                            username: "michaelis",
-                            comtext: "hey now! that's beautiful))))"
-                        },
-                    ]
-                },
-                {
-                    code: 302,
-                    img: "https://www.animalfriendsrescue.org/available/cat_soba.jpg",
-                    hiddenColor: "darkgreen",
-                    hiddenColorOpacity: "0.3",
-                    hiddenText: "дай мне соль",
-                    hiddenTextSize: "20px",
-                    hiddenTextColor: "black",
-                    sign: "Ohh shit! A Post!",
-                    header: "02.07.2019 23:20",
-                    comments: [
-                        {
-                            username: "username",
-                            comtext: "his or her superfunny comment"
-                        },
-                        {
-                            username: "michaelis",
-                            comtext: "hey now! that's beautiful))))"
-                        },
-                        {
-                            username: "creepyshithead",
-                            comtext: "wtf with this comment section"
-                        },
-                    ]
-                }
+
             ]
         }
+        this.get = this.get.bind(this);
+    }
+    get(uri, body, somefunction){
+        const fun = (refreshFunction) => {
+            let access_token = cookies.get("access_token");
+            let refresh_token = cookies.get("refresh_token");
+            let temp = JSON.parse(body);
+            let newBody = {};
+            for(var i in temp){
+                newBody[i] = temp[i];
+            }
+            newBody.refresh_token = refresh_token;
+            newBody.access_token = access_token;
+            fetch(uri, {
+                method: "POST",
+                body: JSON.stringify(newBody),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res=>res.json())
+            .then(
+                (response)=>{
+                //====response=function====
+                console.log(response);
+                if(!response.error){
+                    console.log("nicely done");
+                    this.setState({
+                        data: response
+                    })
+                } else {
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    console.log(this.refreshFunction);
+                    refreshFunction(fun)
+                }
+                //=========================
+            })
+            .catch(error=>{console.log(error)})
+        }
+        const refresh = (again) => {
+            fetch("http://localhost:3001/refreshtoken", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: cookies.get("username"),
+                    access_token: cookies.get("access_token"),
+                    refresh_token: cookies.get("refresh_token")
+                })
+            }).then(res=>res.json())
+            .then(response=>{
+                console.log(`new access_token: ${response.access_token}`);
+                console.log(`new refresh_token: ${response.refresh_token}`);
+                cookies.set("access_token", response.access_token, {path: "/"});
+                cookies.set("refresh_token", response.refresh_token, {path: "/"});
+                again(uri, JSON.stringify({
+                    username: cookies.get("username"),
+                    access_token: cookies.get("access_token")
+                }))
+            })
+        }
+        fun(refresh)
+    }
+    componentWillMount(){
+        let body = JSON.stringify({
+            username: cookies.get("username")
+        })
+        this.get("http://localhost:3001/get", body);
     }
     render(){
         return(
@@ -125,7 +97,6 @@ class Main extends React.Component{
                             return(
                                 <Post200
                                     key={key}
-                                    sign={el.sign}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -141,7 +112,6 @@ class Main extends React.Component{
                                 <Post201
                                     key={key}
                                     img={el.img}
-                                    sign={el.sign}
                                     header={el.header}
                                     hiddenColor={el.hiddenColor}
                                     hiddenColorOpacity={el.hiddenColorOpacity}
@@ -162,7 +132,6 @@ class Main extends React.Component{
                             return (
                                 <Post300
                                     key={key}
-                                    sign={el.sign}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -177,7 +146,6 @@ class Main extends React.Component{
                             return (
                                 <Post301
                                     key={key}
-                                    sign={el.sign}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -188,7 +156,7 @@ class Main extends React.Component{
                                     hiddenTextSize={el.hiddenTextSize}
                                 />
                             )
-                        } else if (el.code===302) { //authorized pic only
+                        } else if (el.code===302) { //unauthorized pic only
                             return (
                                 <Post302 
                                     key={key}
@@ -196,9 +164,16 @@ class Main extends React.Component{
                                     header={el.header}
                                 />
                             )
-                        } else if (el.code===400) { //authorized pic only
+                        } else if (el.code===303) { //unauthorized nothing
                             return (
-                                <Post400 
+                                <Post303
+                                    key={key}
+                                    header={el.header}
+                                />
+                            )
+                        } else if (el.code===203) { //unauthorized nothing
+                            return (
+                                <Post203
                                     key={key}
                                     header={el.header}
                                 />

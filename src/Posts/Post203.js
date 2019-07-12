@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Post202 extends React.Component{
+class Post203 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -14,7 +14,7 @@ class Post202 extends React.Component{
                     <div className="post-header">
                         <div className="postTime">{this.state.header}</div>
                         <div className="hiddenPostLine">
-                            <a href="/">Log in</a><span>to see this post's information</span>
+                            <span style={{color: "gray"}}>This post is hidden for you, sorry :)</span>
                         </div>
                     </div>
                 </div>
@@ -23,4 +23,4 @@ class Post202 extends React.Component{
     }
 }
 
-export default Post202;
+export default Post203;

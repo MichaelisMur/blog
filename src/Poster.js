@@ -13,6 +13,11 @@ class Poster extends React.Component{
         return(
             <div className="Poster"
                 onClick={()=>{
+                    console.log(cookies.get("username"));
+                    console.log(cookies.get("access_token"));
+                    console.log(cookies.get("refresh_token"));
+                    let temp = new Date();
+                    console.log(temp.toISOString());
                 }}
             >
                 <h1>

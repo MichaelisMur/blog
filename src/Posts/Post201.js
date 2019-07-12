@@ -5,7 +5,6 @@ class Post201 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            sign: props.sign,
             img: props.img,
             header: props.header,
             hiddenColor: props.hiddenColor,
