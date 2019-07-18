@@ -31,6 +31,7 @@ class Login extends React.Component{
                             if(response.code === 200){
                                 console.log("success");
                                 cookies.set("username", response.username, { path: '/' });
+                                cookies.set("id", response.id, { path: '/' });
                                 cookies.set("access_token", response.access_token, { path: '/' });
                                 cookies.set("refresh_token", response.refresh_token, { path: '/' });
                             }
@@ -57,9 +58,6 @@ class Login extends React.Component{
                 </form>
             </div>
         )
-    }
-    componentDidMount(){
-        cookies.set('myCat', "meow", { path: '/' });
     }
 }
 

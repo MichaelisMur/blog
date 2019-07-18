@@ -15,6 +15,7 @@ class Register extends React.Component{
     }
     onResponse(){
         cookies.set('username', this.state.response.username, { path: '/' });
+        cookies.set("id", this.state.response.id, { path: '/' });
         cookies.set('access_token', this.state.response.access_token, { path: '/' });
         cookies.set('refresh_token', this.state.response.refresh_token, { path: '/' });
         console.log(this.state.response);

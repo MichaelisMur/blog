@@ -1,4 +1,5 @@
 import React from 'react';
+// import LazyLoad from 'react-lazy-load';
 
 class Picture extends React.Component{
     constructor(props){
@@ -35,7 +36,9 @@ class Picture extends React.Component{
                 }}
                 // -------------
             >
-                <img src={this.state.img} alt=""></img>
+                {/* <LazyLoad offsetVertical={0}> */}
+                    <img src={this.state.img} alt=""></img>
+                {/* </LazyLoad> */}
                 {/* HOVER EFFECT */}
                 <div className="pictureScript">
                     <div className="hiddenText"
@@ -43,7 +46,7 @@ class Picture extends React.Component{
                             opacity: this.state.signOpacity,
                             height: this.state.signOffTop,
                             color: this.state.hiddenTextColor,
-                            fontSize: this.state.hiddenTextSize
+                            fontSize: `${this.state.hiddenTextSize}px`
                         }}
                     >
 

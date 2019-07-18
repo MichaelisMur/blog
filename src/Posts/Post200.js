@@ -15,6 +15,7 @@ class Post200 extends React.Component{
             hiddenText: props.hiddenText,
             hiddenTextColor: props.hiddenTextColor,
             hiddenTextSize: props.hiddenTextSize,
+            post_id: props.post_id
         }
     }
     render(){
@@ -33,7 +34,10 @@ class Post200 extends React.Component{
                         hiddenTextSize={this.state.hiddenTextSize}
                     />
                     <div className="comments">
-                        <Comments data={this.state.comments} />
+                        <Comments
+                            data={this.state.comments}
+                            post_id={this.state.post_id}
+                        />
                     </div>
                 </div>
             </div>

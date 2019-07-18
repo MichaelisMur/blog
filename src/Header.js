@@ -14,7 +14,9 @@ class Header extends React.Component{
             right: [
 
             ],
-            showLogOut: 0
+            showLogOut: 0,
+            line: props.line,
+            headerLine: {}
         }
     }
     mouseOver(e){
@@ -51,7 +53,7 @@ class Header extends React.Component{
             let right = [
                 {
                     title: "Portfolio",
-                    destination: "/about"
+                    destination: "/stat"
                 },
                 {
                     title: cookies.get("username"),
@@ -73,7 +75,7 @@ class Header extends React.Component{
             let right = [
                 {
                     title: "Portfolio",
-                    destination: "/about"
+                    destination: "/stat"
                 },
                 {
                     title: "Sign Up",
@@ -90,46 +92,59 @@ class Header extends React.Component{
                 showLogOut: 0})
         }
     }
-
     render(){
         return(
-            <div className="Header">
-                <div className="innerHeader">
-                    <div className="left">
-                        {this.state.left.map((el, key)=>(
-                            <HeaderButton
-                                title={el.title}
-                                destination={el.destination}
-                                key={key}
+            <div>
+                <div className="HeaderLine"
+                    style={{
+                        height: this.state.headerLine.height
+                    }}
+                ></div>
+                <div className="Header">
+                    <div className="innerHeader">
+                        <div className="left">
+                            {this.state.left.map((el, key)=>(
+                                <HeaderButton
+                                    title={el.title}
+                                    destination={el.destination}
+                                    key={key}
+                                    mouseOver={this.mouseOver}
+                                    mouseOut={this.mouseOut}
+                                />
+                            ))}
+                        </div>
+                        <div className="right">
+                            {this.state.right.map((el, key)=>(
+                                <HeaderButton
+                                    title={el.title}
+                                    destination={el.destination}
+                                    key={key}
+                                    mouseOver={this.mouseOver}
+                                    mouseOut={this.mouseOut}
+                                />
+                            ))}
+                            <Logout
+                                showLogOut={this.state.showLogOut}
                                 mouseOver={this.mouseOver}
                                 mouseOut={this.mouseOut}
                             />
-                        ))}
-                    </div>
-                    <div className="right">
-                        {this.state.right.map((el, key)=>(
-                            <HeaderButton
-                                title={el.title}
-                                destination={el.destination}
-                                key={key}
-                                mouseOver={this.mouseOver}
-                                mouseOut={this.mouseOut}
-                            />
-                        ))}
-                        <Logout
-                            showLogOut={this.state.showLogOut}
-                            mouseOver={this.mouseOver}
-                            mouseOut={this.mouseOut}
-                        />
+                        </div>
                     </div>
                 </div>
             </div>
+            
         )
     }
     componentDidMount(){
         if(document.querySelectorAll(".headerLine")){
             window.addEventListener("scroll", this.Scroll);
         }
+        // console.log(document.querySelector(".Header").clientHeight)
+        this.setState({
+            headerLine: {
+                height: this.state.line ? document.querySelector(".Header").clientHeight : ""
+            }
+        })
     }
     componentWillUnmount(){
         window.removeEventListener("scroll", this.Scroll);

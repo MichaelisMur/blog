@@ -7,6 +7,7 @@ import Post301 from './Posts/Post301';
 import Post302 from './Posts/Post302';
 import Post203 from './Posts/Post203';
 import Post303 from './Posts/Post303';
+import Refresh from './Refresh';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
@@ -16,87 +17,32 @@ class Main extends React.Component{
         this.state = {
             data: [
 
-            ]
+            ],
+            index: 0,
+            toShow: 5,
+            endOfThePage: 0,
+            fetching: 0,
+            loading: true
         }
-        this.get = this.get.bind(this);
-    }
-    get(uri, body, somefunction){
-        const fun = (refreshFunction) => {
-            let access_token = cookies.get("access_token");
-            let refresh_token = cookies.get("refresh_token");
-            let temp = JSON.parse(body);
-            let newBody = {};
-            for(var i in temp){
-                newBody[i] = temp[i];
-            }
-            newBody.refresh_token = refresh_token;
-            newBody.access_token = access_token;
-            fetch(uri, {
-                method: "POST",
-                body: JSON.stringify(newBody),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(res=>res.json())
-            .then(
-                (response)=>{
-                //====response=function====
-                console.log(response);
-                if(!response.error){
-                    console.log("nicely done");
-                    this.setState({
-                        data: response
-                    })
-                } else {
-                    console.log("НА ВЗЛЕТ ЕБАТЬ");
-                    console.log(this.refreshFunction);
-                    refreshFunction(fun)
-                }
-                //=========================
-            })
-            .catch(error=>{console.log(error)})
-        }
-        const refresh = (again) => {
-            fetch("http://localhost:3001/refreshtoken", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: cookies.get("username"),
-                    access_token: cookies.get("access_token"),
-                    refresh_token: cookies.get("refresh_token")
-                })
-            }).then(res=>res.json())
-            .then(response=>{
-                console.log(`new access_token: ${response.access_token}`);
-                console.log(`new refresh_token: ${response.refresh_token}`);
-                cookies.set("access_token", response.access_token, {path: "/"});
-                cookies.set("refresh_token", response.refresh_token, {path: "/"});
-                again(uri, JSON.stringify({
-                    username: cookies.get("username"),
-                    access_token: cookies.get("access_token")
-                }))
-            })
-        }
-        fun(refresh)
-    }
-    componentWillMount(){
-        let body = JSON.stringify({
-            username: cookies.get("username")
-        })
-        this.get("http://localhost:3001/get", body);
+        this.fun = this.fun.bind(this);
+        this.loadMore = this.loadMore.bind(this);
     }
     render(){
         return(
             <div className="Main">
                 <div className="posts">
+                    <div className="loading"
+                            style={{display: this.state.loading?"flex":"none"}}
+                        >
+                        <div className="loadingIcon">
+                        </div>
+                    </div>
                     {this.state.data.map((el, key)=>{
-
                         if(el.code===200){ //authorized shown everything
                             return(
                                 <Post200
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -111,6 +57,7 @@ class Main extends React.Component{
                             return (
                                 <Post201
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     header={el.header}
                                     hiddenColor={el.hiddenColor}
@@ -124,6 +71,7 @@ class Main extends React.Component{
                             return (
                                 <Post202 
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     header={el.header}
                                 />
@@ -132,6 +80,7 @@ class Main extends React.Component{
                             return (
                                 <Post300
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -146,6 +95,7 @@ class Main extends React.Component{
                             return (
                                 <Post301
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     comments={el.comments}
                                     header={el.header}
@@ -160,6 +110,7 @@ class Main extends React.Component{
                             return (
                                 <Post302 
                                     key={key}
+                                    post_id={el.id}
                                     img={el.img}
                                     header={el.header}
                                 />
@@ -168,6 +119,7 @@ class Main extends React.Component{
                             return (
                                 <Post303
                                     key={key}
+                                    post_id={el.id}
                                     header={el.header}
                                 />
                             )
@@ -175,6 +127,7 @@ class Main extends React.Component{
                             return (
                                 <Post203
                                     key={key}
+                                    post_id={el.id}
                                     header={el.header}
                                 />
                             )
@@ -188,6 +141,64 @@ class Main extends React.Component{
                 <div className="info">info</div>
             </div>
         )
+    }
+    fun(){
+        const fun = (refreshFunction) => {
+            if(this.state.endOfThePage || this.state.fetching) return
+            this.setState({fetching: 1});
+            console.log("fetching");
+            fetch("http://localhost:3001/get", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: cookies.get("username"),
+                    access_token: cookies.get("access_token"),
+                    index: this.state.index,
+                    toShow: this.state.toShow
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res=>res.json())
+            .then(response=>{
+                if(!response.error){
+                    this.setState(prevState=>{
+                        if(!response.length){
+                            return({
+                                endOfThePage: 1,
+                                fetching: 0,
+                                loading: false
+                            })
+                        }
+                        let temp = [...prevState.data, ...response];
+                        console.log("got it");
+                        return({
+                            index: prevState.index + prevState.toShow,
+                            data: temp,
+                            fetching: 0,
+                            loading: false
+                        })
+                    })
+                } else {
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    this.setState({fetching: 0})
+                    refreshFunction(fun)
+                }
+            })
+            .catch(error=>{console.log(error)})
+        }
+        Refresh(fun);
+    }
+    loadMore(){
+        if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 100){
+            this.fun();
+        }
+    }
+    componentDidMount(){
+        window.addEventListener("scroll", this.loadMore);
+        this.fun();
+    }
+    componentWillUnmount(){
+        window.removeEventListener("scroll", this.loadMore)
     }
 }
 

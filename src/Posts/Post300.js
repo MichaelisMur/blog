@@ -6,6 +6,7 @@ class Post300 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            post_id: props.post_id,
             img: props.img,
             comments: props.comments,
             header: props.header,
@@ -33,7 +34,11 @@ class Post300 extends React.Component{
                         hiddenTextSize={this.state.hiddenTextSize}
                     />
                     <div className="comments">
-                        <Comments data={this.state.comments} shown={0} />
+                        <Comments
+                            data={this.state.comments}
+                            shown={0}
+                            post_id={this.state.post_id}
+                        />
                     </div>
                 </div>
             </div>

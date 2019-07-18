@@ -8,6 +8,7 @@ import Login from './Login';
 import New from './New';
 import Get from './Get';
 import Request from './Request';
+import Stat from './Stat';
 import {Switch, Route} from 'react-router-dom';
 // import qs from 'query-string';
 // import Cookies from 'universal-cookie';
@@ -32,19 +33,9 @@ class HomePage extends React.Component{
 }
 
 
-// const HomePage = (props) => {
-//   if(qs.parse(props.location.search, { ignoreQueryPrefix: true }).logout){
-//     cookies.remove("username", { path: '/' });
-//   }
-//   return(
-//     <div className="App">
-//       <Header />
-//       <Poster />
-//       <Main/>
-//     </div>
-//   )
-// }
+
 const About = () => {
+  console.log("emm");
   return(
     <div className="shit">
       <Header />
@@ -69,6 +60,7 @@ class App extends React.Component{
         <Route path="/new" component={New} />
         <Route path="/get" component={Get} />
         <Route path="/request" component={Request} />
+        <Route path="/Stat" component={Stat} />
         <Route path="/" component={HomePage} />
       </Switch>
     )
@@ -78,19 +70,5 @@ class App extends React.Component{
 
   }
 }
-
-// class App extends React.Component{
-//   constructor(props){
-//     super(props);
-//     this.state = {
-
-//     }
-//   }
-//   render(){
-//     return(
-      
-//     )
-//   }
-// }
 
 export default App;
