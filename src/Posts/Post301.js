@@ -13,6 +13,7 @@ class Post301 extends React.Component{
             hiddenText: props.hiddenText,
             hiddenTextColor: props.hiddenTextColor,
             hiddenTextSize: props.hiddenTextSize,
+            post_id: props.post_id
         }
     }
     render(){
@@ -29,6 +30,7 @@ class Post301 extends React.Component{
                         hiddenText={this.state.hiddenText}
                         hiddenTextColor={this.state.hiddenTextColor}
                         hiddenTextSize={this.state.hiddenTextSize}
+                        post_id={this.state.post_id}
                     />
                     <div className="comments">
                         <div className="logTocomment">

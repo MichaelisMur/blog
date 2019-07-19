@@ -19,7 +19,7 @@ class Poster extends React.Component{
                 }}
             >
                 <h1>
-                    Find a seat if you can, traveller :)
+                    Д И З А Й Н
                 </h1>
                 <h2>
                     {this.state.value}

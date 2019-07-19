@@ -13,8 +13,19 @@ class Picture extends React.Component{
             hiddenTextColor: props.hiddenTextColor,
             opacity: 0,
             signOpacity: 0,
-            signOffTop: "80%"
+            signOffTop: "80%",
+            post_id: props.post_id
         }
+    }
+    componentWillReceiveProps(props){
+        this.setState({
+            img: props.img,
+            hiddenColor: props.hiddenColor,
+            hiddenColorOpacity: props.hiddenColorOpacity,
+            hiddenText: props.hiddenText,
+            hiddenTextSize: props.hiddenTextSize,
+            hiddenTextColor: props.hiddenTextColor,
+        })
     }
     render(){
         return(
@@ -37,7 +48,7 @@ class Picture extends React.Component{
                 // -------------
             >
                 {/* <LazyLoad offsetVertical={0}> */}
-                    <img src={this.state.img} alt=""></img>
+                    <img src={`http://localhost:3001/public/img/${this.state.post_id}_${this.state.img}.jpg`} alt=""></img>
                 {/* </LazyLoad> */}
                 {/* HOVER EFFECT */}
                 <div className="pictureScript">

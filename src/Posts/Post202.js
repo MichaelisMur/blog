@@ -7,6 +7,7 @@ class Post202 extends React.Component{
         this.state = {
             img: props.img,
             header: props.header,
+            post_id: props.post_id
         }
     }
     render(){
@@ -23,6 +24,7 @@ class Post202 extends React.Component{
                         hiddenText={"Sorry, you are not allowed to see this post's information :с"}
                         hiddenTextColor={"lightgray"}
                         hiddenTextSize={"20px"}
+                        post_id={this.state.post_id}
                     />
                     <div className="comments">
                         <div className="restrictedComs">

@@ -7,6 +7,7 @@ class Post302 extends React.Component{
         this.state = {
             img: props.img,
             header: props.header,
+            post_id: props.post_id
         }
     }
     render(){
@@ -23,6 +24,7 @@ class Post302 extends React.Component{
                         hiddenText={"You have to authorize to see this post's information"}
                         hiddenTextColor={"lightgray"}
                         hiddenTextSize={"20px"}
+                        post_id={this.state.post_id}
                     />
                     <div className="comments">
                         <div className="logTocomment">

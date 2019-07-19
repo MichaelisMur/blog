@@ -13,7 +13,7 @@ class Post303 extends React.Component{
             <div className="Post">
                 <div className="post-container">
                     <div className="post-header">
-                        <div className="postTime">{this.state.header}</div>
+                        <div className="postTime"></div>
                         <div className="hiddenPostLine">
                             <Link to="/login">Log in</Link><span>to see this post's information</span>
                         </div>

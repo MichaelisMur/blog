@@ -12,7 +12,6 @@ class Post203 extends React.Component{
             <div className="Post">
                 <div className="post-container">
                     <div className="post-header">
-                        <div className="postTime">{this.state.header}</div>
                         <div className="hiddenPostLine">
                             <span style={{color: "gray"}}>This post is hidden for you, sorry :)</span>
                         </div>

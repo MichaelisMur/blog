@@ -1,54 +1,57 @@
-import React from 'react';
+import React from 'react'
 
-export default class DND extends React.Component{
+class DND extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            status: props.status,
-            data: props.data
+            status: "white",
+            data: props.data,
+            name: "name..?",
+            postInfoSent: false
         }
+        this.loadNudes = this.loadNudes.bind(this);
     }
     componentWillReceiveProps(props){
         this.setState({
             status: props.status,
-            data: props.data
+            data: props.data,
+            name: props.name,
+            postInfoSent: props.postInfoSent
         })
     }
+    componentDidUpdate(){
+        if(this.state.postInfoSent){
+            console.log("upd")
+        }
+    }
+    loadNudes(){
+        const formData = new FormData();
+
+        formData.append('file', this.state.data);
+        formData.append('name', this.state.name);
+
+        fetch('http://localhost:3001/upload', {
+            method: 'POST',
+            body: formData,
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log("so what?");
+            console.log(!data.err);
+        });
+    }
     render(){
+        if(this.state.status==="red"){
+            this.loadNudes()
+        }
         return(
-            <div className="dnd">
-                {this.state.status}
-                
-                <button
-                    type="button"
-                    onClick={(e)=>{
-                        e.preventDefault();
-
-                        const formData = new FormData();
-
-                        formData.append('file', this.state.data);
-
-                        const options = {
-                        method: 'POST',
-                        body: formData,
-                        // If you add this, upload won't work
-                        // headers: {
-                        //   'Content-Type': 'multipart/form-data',
-                        // }
-                        };
-
-                        fetch('http://localhost:3001/upload', options);
-                        // console.log(this.state.data)
-                        // fetch("http://localhost:3001/upload", {
-                        //     method: "POST",
-                        //     body: formData,
-                        // }).then(res=>res.json())
-                        // .then(data=>{
-                        //     console.log(data)
-                        // })
-                    }}
-                >push me</button>
+            <div className="dnd"
+                style={{background: this.state.status}}
+            >
+                <p>{this.state.message}</p>
             </div>
         )
+        
     }
 }
+
+export default DND

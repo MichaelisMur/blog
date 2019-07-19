@@ -103,12 +103,23 @@ class Comments extends React.Component{
                     
                     <div className="commentsContainer">
                         <div className="comms">
-                        {this.state.data.map((el, key)=>(
-                            <div key={key}>
-                                <strong>{el.username} </strong>
-                                <span style={{whiteSpace: "pre-wrap"}}>{el.comment}</span>
+                        
+                            <CommentContainer
+                                data={this.state.data}
+                                post_id={this.state.post_id}
+                                opened={this.state.opened}
+                            />
+                            <div className="showMore"
+                                onClick={()=>{
+                                    this.setState({
+                                        opened:true,
+                                        loadMoreShown: false
+                                    })
+                                }}
+                                style={{display: this.state.loadMoreShown?"block":"none"}}
+                            >
+                                Show more
                             </div>
-                        ))}
                         </div>
                     </div>
                     <div className="logTocomment">

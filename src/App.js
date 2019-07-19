@@ -1,15 +1,16 @@
-import React from 'react';
-import './style/App.css';
-import Main from './Main';
-import Poster from './Poster';
-import Header from './Header';
-import Register from './Register';
-import Login from './Login';
-import New from './New';
-import Get from './Get';
-import Request from './Request';
-import Stat from './Stat';
-import {Switch, Route} from 'react-router-dom';
+import React from 'react'
+import './style/App.css'
+import Main from './Main'
+import Poster from './Poster'
+import Header from './Header'
+import Register from './Register'
+import Login from './Login'
+import New from './New'
+import Get from './Get'
+import Request from './Request'
+import Stat from './Stat'
+import ColorPicker from './ColorPicker'
+import {Switch, Route} from 'react-router-dom'
 // import qs from 'query-string';
 // import Cookies from 'universal-cookie';
 // const cookies = new Cookies();
@@ -61,6 +62,7 @@ class App extends React.Component{
         <Route path="/get" component={Get} />
         <Route path="/request" component={Request} />
         <Route path="/Stat" component={Stat} />
+        <Route path="/me" component={ColorPicker} />
         <Route path="/" component={HomePage} />
       </Switch>
     )

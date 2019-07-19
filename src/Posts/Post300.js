@@ -32,6 +32,7 @@ class Post300 extends React.Component{
                         hiddenText={this.state.hiddenText}
                         hiddenTextColor={this.state.hiddenTextColor}
                         hiddenTextSize={this.state.hiddenTextSize}
+                        post_id={this.state.post_id}
                     />
                     <div className="comments">
                         <Comments

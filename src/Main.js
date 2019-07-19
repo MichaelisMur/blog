@@ -19,7 +19,7 @@ class Main extends React.Component{
 
             ],
             index: 0,
-            toShow: 5,
+            toShow: 2,
             endOfThePage: 0,
             fetching: 0,
             loading: true
@@ -189,7 +189,7 @@ class Main extends React.Component{
         Refresh(fun);
     }
     loadMore(){
-        if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 100){
+        if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 200){
             this.fun();
         }
     }
