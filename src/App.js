@@ -9,7 +9,6 @@ import New from './New'
 import Get from './Get'
 import Request from './Request'
 import Stat from './Stat'
-import ColorPicker from './ColorPicker'
 import {Switch, Route} from 'react-router-dom'
 // import qs from 'query-string';
 // import Cookies from 'universal-cookie';
@@ -62,7 +61,6 @@ class App extends React.Component{
         <Route path="/get" component={Get} />
         <Route path="/request" component={Request} />
         <Route path="/Stat" component={Stat} />
-        <Route path="/me" component={ColorPicker} />
         <Route path="/" component={HomePage} />
       </Switch>
     )
