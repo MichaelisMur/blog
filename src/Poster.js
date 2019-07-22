@@ -19,7 +19,7 @@ class Poster extends React.Component{
                 }}
             >
                 <h1>
-                    Д И З А Й Н
+                    <span>Д И З А Й Н</span>
                 </h1>
                 <h2>
                     {this.state.value}

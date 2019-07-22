@@ -1,15 +1,17 @@
-import React from 'react';
-import Post200 from './Posts/Post200';
-import Post201 from './Posts/Post201';
-import Post202 from './Posts/Post202';
-import Post300 from './Posts/Post300';
-import Post301 from './Posts/Post301';
-import Post302 from './Posts/Post302';
-import Post203 from './Posts/Post203';
-import Post303 from './Posts/Post303';
-import Refresh from './Refresh';
-import Cookies from 'universal-cookie';
-const cookies = new Cookies();
+import React from 'react'
+import Post200 from './Posts/Post200'
+import Post201 from './Posts/Post201'
+import Post202 from './Posts/Post202'
+import Post300 from './Posts/Post300'
+import Post301 from './Posts/Post301'
+import Post302 from './Posts/Post302'
+import Post203 from './Posts/Post203'
+import Post303 from './Posts/Post303'
+import Refresh from './Refresh'
+import Cookies from 'universal-cookie'
+import {Icon} from 'semantic-ui-react'
+import Poster from './Poster'
+const cookies = new Cookies()
 
 class Main extends React.Component{
     constructor(props){
@@ -29,6 +31,9 @@ class Main extends React.Component{
     }
     render(){
         return(
+            
+               <div>
+        <Poster />
             <div className="Main">
                 <div className="posts">
                     <div className="loading"
@@ -137,9 +142,16 @@ class Main extends React.Component{
                         )
                         
                     })}
+                    <div className="fetching"
+                        style={{visibility: this.state.fetching ? "visible" : "hidden"}}
+                    >
+                        <Icon size='big' loading name='spinner' />
+                    </div>
                 </div>
                 <div className="info">info</div>
             </div>
+                   
+                   </div> 
         )
     }
     fun(){
@@ -189,7 +201,7 @@ class Main extends React.Component{
         Refresh(fun);
     }
     loadMore(){
-        if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 200){
+        if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 300){
             this.fun();
         }
     }

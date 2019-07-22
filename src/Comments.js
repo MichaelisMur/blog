@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Refresh from './Refresh';
 import CommentContainer from './CommentContainer';
+import { TextArea, Form} from 'semantic-ui-react'
 const cookies = new Cookies();
 
 class Comments extends React.Component{
@@ -14,7 +15,8 @@ class Comments extends React.Component{
             input: props.shown,
             post_id: props.post_id,
             opened: props.data.length > 3 ? false : true,
-            loadMoreShown: props.data.length > 3 ? true : false
+            loadMoreShown: props.data.length > 3 ? true : false,
+            fetching: false
         }
         this.addComment = this.addComment.bind(this);
         this.onEnterPress = this.onEnterPress.bind(this);
@@ -26,6 +28,7 @@ class Comments extends React.Component{
         }
     }
     addComment(){
+        this.setState({fetching: true})
         const fun = (refreshFunction) => {
             fetch("http://localhost:3001/comment", {
                 method: "POST",
@@ -42,6 +45,7 @@ class Comments extends React.Component{
             .then(response => {
                 if(!response.error){
                     this.setState({
+                        fetching: false,
                         data: response,
                         yourComment: "",
                         opened: true,
@@ -58,32 +62,49 @@ class Comments extends React.Component{
         if(this.state.input!==0){
             return(
                 <div>
-                    <div className="commentsContainer">
-                        <div className="comms">
-                            <CommentContainer
-                                data={this.state.data}
-                                post_id={this.state.post_id}
-                                opened={this.state.opened}
-                            />
-                            <div className="showMore"
-                                onClick={()=>{
-                                    this.setState({
-                                        opened:true,
-                                        loadMoreShown: false
-                                    })
-                                }}
-                                style={{display: this.state.loadMoreShown?"block":"none"}}
-                            >
-                                Show more
-                            </div>
-                        </div>
-                    </div>
-                    <div className="addComment">
-                        <form onSubmit={(e)=>{
+                    <Form onSubmit={(e)=>{
                             e.preventDefault();
                             this.addComment();
-                        }}>
-                            <textarea type="text" placeholder="Type your fun comment here"
+                        }}
+                        loading={this.state.fetching?true:false}
+                        >
+                        <div className="commentsContainer">
+                            
+                            {/* <div className="fetchingComment"
+                                style={{display: this.state.fetching ? "flex" : "none"}}
+                            >
+                                <Icon size='large' color="grey" loading name='spinner' />
+                            </div> */}
+                            <div className="comms"
+                                style={{
+                                    opacity: this.state.fetching ? "0.5" : "1",
+                                    padding: this.state.data.length?"7px 10px":"0 10px"
+                                }}
+                                
+                            >
+                                <CommentContainer
+                                    data={this.state.data}
+                                    post_id={this.state.post_id}
+                                    opened={this.state.opened}
+                                />
+                                <div className="showMore"
+                                    onClick={()=>{
+                                        this.setState({
+                                            opened:true,
+                                            loadMoreShown: false
+                                        })
+                                    }}
+                                    style={{display: this.state.loadMoreShown?"block":"none"}}
+                                >
+                                    Show more
+                                </div>
+                            </div>
+                        </div>
+                        <div className="addComment">
+                            <TextArea
+                                placeholder="Type your fun comment here"
+                                style={{ minHeight: 42, "border": "none" }}
+                                
                                 onChange={(e)=>{
                                     this.setState({
                                         yourComment: e.target.value
@@ -92,9 +113,11 @@ class Comments extends React.Component{
                                 value={this.state.yourComment}
                                 onKeyDown={this.onEnterPress}
                             />
+                            {/* <textarea type="text" placeholder="Type your fun comment here"
+                            /> */}
                             <button type="submit" className="postCommentButton">Post</button>
-                        </form>
-                    </div>
+                        </div>
+                    </Form>
                 </div>
             )
         } else {

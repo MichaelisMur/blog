@@ -1,7 +1,7 @@
 import React from 'react'
 import './style/App.css'
 import Main from './Main'
-import Poster from './Poster'
+// import Poster from './Poster'
 import Header from './Header'
 import Register from './Register'
 import Login from './Login'
@@ -25,10 +25,16 @@ class HomePage extends React.Component{
     return(
       <div className="App">
       <Header />
-      <Poster />
+      {/* <Poster /> */}
       <Main/>
     </div>
     )
+  }
+  componentDidMount(){
+
+  }
+  componentWillUnmount(){
+
   }
 }
 

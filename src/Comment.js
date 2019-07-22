@@ -2,6 +2,7 @@ import React from 'react';
 import Refresh from './Refresh';
 import { Transition } from 'semantic-ui-react';
 import Cookies from 'universal-cookie';
+import {Loader} from 'semantic-ui-react'
 const cookies = new Cookies();
 
 export default class Comment extends React.Component{
@@ -17,7 +18,8 @@ export default class Comment extends React.Component{
             isMine: props.author === props.username,
             showOptions: false,
             deleted: false,
-            shown: props.shown
+            shown: props.shown,
+            fetching: false
         }
         this.toggleOptions = this.toggleOptions.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
@@ -36,6 +38,7 @@ export default class Comment extends React.Component{
     deleteComment(){
         if(!this.state.isMine) return
         const fun = (refreshFunction)=>{
+            this.setState({fetching: true})
             fetch("http://localhost:3001/deletecomment", {
                 method: "POST",
                 body: JSON.stringify({
@@ -57,7 +60,8 @@ export default class Comment extends React.Component{
                 } else {
                     this.setState({
                         deleted: data.deleted,
-                        visible: false
+                        visible: false,
+                        fetching: false
                     })
                 }
                 this.setState({
@@ -70,6 +74,7 @@ export default class Comment extends React.Component{
     restoreComment(){
         if(!this.state.isMine) return
         const fun = (refreshFunction)=>{
+            this.setState({fetching: true})
             fetch("http://localhost:3001/restorecomment", {
                 method: "POST",
                 body: JSON.stringify({
@@ -91,6 +96,7 @@ export default class Comment extends React.Component{
                     this.setState({
                         visible: false,
                         deleted: data.deleted,
+                        fetching: false
                     })
                 }
                 this.setState({
@@ -115,7 +121,6 @@ export default class Comment extends React.Component{
             }}
             style={{display: this.state.shown?"flex":"none"}}
             >
-
                 <div className="info">
                     <strong
                         style={{
@@ -131,20 +136,18 @@ export default class Comment extends React.Component{
                 <div className="options"
                     onClick={this.toggleOptions}
                 >
-                    <div className="foo" style={{display: this.state.showOptions ? "block" : "none"}}>
-                        卐
+                    <div className="foo" style={{display: this.state.showOptions ? "flex" : "none"}}>
+                        <div style={{display: this.state.fetching ? "none" : "block"}}>
+                            <img src="http://localhost:3001/public/options.png" alt="options" />
+                        </div>
+                        <div style={{display: this.state.fetching ? "block" : "none"}}>
+                            <Loader active inline size="tiny" />
+                        </div>
                     </div>
                 </div>
                 <Transition visible={this.state.visible} animation='scale' duration={200}>
                     <div className="comOptions">
                         <div className="optionsContainer">
-                            <div className="button" style={{display: this.state.isMine && !this.state.deleted ? "flex" : "none"}}
-                                onClick={()=>{
-                                    console.log(this.state.id + " edit")
-                                }}
-                            >
-                                Edit
-                            </div>
                             <div className="button" style={{display: this.state.isMine && !this.state.deleted ? "flex" : "none"}}
                                 onClick={this.deleteComment}
                             >

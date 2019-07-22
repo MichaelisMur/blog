@@ -7,7 +7,6 @@ const CommentContainer = (props)=>{
     if(props.data.length===0){
         return(
             <div style={{color: "grey"}}>
-                Be first to comment
             </div>
         )
     } else {
@@ -16,7 +15,7 @@ const CommentContainer = (props)=>{
                 {props.data.map((el, key)=>{
                     return(
                         <Comment
-                            key={key}
+                            key={key + el.comment}
                             author={el.username}
                             comment={el.comment}
                             id={el._id}

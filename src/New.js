@@ -4,6 +4,8 @@ import Cookies from 'universal-cookie'
 import Refresh from './Refresh'
 import moment from 'moment'
 import Post200 from './Posts/Post200'
+import { SketchPicker } from 'react-color'
+import {Link} from 'react-router-dom';
 // import DND from './DND'
 const cookies = new Cookies();
 
@@ -16,7 +18,6 @@ class New extends React.Component{
             unauthCode: 0,
             hiddenTextSize: "30",
             hiddenTextColor: "black",
-            hiddenColor: "white",
             hiddenColorOpacity: "0.5",
             DNDstatus: "white",
             img: "",
@@ -27,10 +28,12 @@ class New extends React.Component{
             allDone: false,
             red: 255,
             green: 255,
-            blue: 255
+            blue: 255,
+            sketchPicker: "#fff"
         }
         this.send = this.send.bind(this);
         this.loadNudes = this.loadNudes.bind(this);
+        this.handleChangeComplete = this.handleChangeComplete.bind(this);
     }
     send(){
         console.log(cookies.get("access_token"));
@@ -39,7 +42,7 @@ class New extends React.Component{
                 method: 'POST',
                 body: JSON.stringify({
                     id: this.state.post_id,
-                    hiddenColor: this.state.hiddenColor || `rgb(${this.state.red}, ${this.state.green}, ${this.state.blue})`,
+                    hiddenColor: this.state.sketchPicker,
                     hiddenColorOpacity: `${this.state.hiddenColorOpacity}`,
                     hiddenText: `${this.state.hiddenText}`,
                     hiddenTextSize: this.state.hiddenTextSize,
@@ -55,7 +58,7 @@ class New extends React.Component{
             }).then(res => res.json())
             .then(response => {
                 this.setState({
-
+                    allDone: true
                 })
             })
             .catch(error => console.error('Error:', error));
@@ -86,6 +89,9 @@ class New extends React.Component{
         }
         Refresh(fun)
     }
+    handleChangeComplete = (color) => {
+        this.setState({ sketchPicker: color.hex });
+    };
     render(){
         if(!this.state.imageSent && !this.state.allDone){
             if(this.state.DNDstatus === "red"){
@@ -137,6 +143,7 @@ class New extends React.Component{
                                 this.send();
                             }}
                         >
+                            <label>hiddenText:</label>
                             <textarea placeholder="hiddenText"
                                 onChange={(e)=>{
                                     this.setState({
@@ -145,6 +152,7 @@ class New extends React.Component{
                                 }}
                                 value={this.state.hiddenText}
                             />
+                            <label>hiddenTextSize:</label>
                             <input placeholder="hiddenTextSize"
                                 onChange={(e)=>{
                                     this.setState({
@@ -153,6 +161,7 @@ class New extends React.Component{
                                 }}
                                 value={this.state.hiddenTextSize}
                             />
+                            <label>hiddenTextColor</label>
                             <input placeholder="hiddenTextColor"
                                 onChange={(e)=>{
                                     this.setState({
@@ -161,14 +170,16 @@ class New extends React.Component{
                                 }}
                                 value={this.state.hiddenTextColor}
                             />
+                            <label>hiddenColor:</label>
                             <input placeholder="hiddenColor"
                                 onChange={(e)=>{
                                     this.setState({
-                                        hiddenColor: e.target.value
+                                        sketchPicker: e.target.value
                                     })
                                 }}
-                                value={this.state.hiddenColor}
+                                value={this.state.sketchPicker}
                             />
+                            <label>hiddenColorOpacity:</label>
                             <input placeholder="hiddenColorOpacity"
                                 onChange={(e)=>{
                                     this.setState({
@@ -177,6 +188,7 @@ class New extends React.Component{
                                 }}
                                 value={this.state.hiddenColorOpacity}
                             />
+                            <label>authCode:</label>
                             <input placeholder="authCode"
                                 onChange={(e)=>{
                                     this.setState({
@@ -185,6 +197,7 @@ class New extends React.Component{
                                 }}
                                 value={this.state.authCode}
                             />
+                            <label>unauthCode:</label>
                             <input placeholder="unauthCode"
                                 onChange={(e)=>{
                                     this.setState({
@@ -197,55 +210,27 @@ class New extends React.Component{
                         </form>
 
                         <div className="palette">
-                            red
-                            <input type="range" min="0" max="255" id="redpicker"
-                                onChange={(e)=>{
-                                    this.setState({
-                                        red: e.target.value,
-                                        hiddenColor: ""
-                                    })
-                                }}
-                                value={this.state.red}
-                            ></input>
-                            green
-                            <input type="range" min="0" max="255"  id="greenpicker"
-                                onChange={(e)=>{
-                                    this.setState({
-                                        green: e.target.value,
-                                        hiddenColor: ""
-                                    })
-                                }}
-                                value={this.state.green}
-                            ></input>
-                            blue
-                            <input type="range" min="0" max="255" id="bluepicker"
-                                onChange={(e)=>{
-                                    this.setState({
-                                        blue: e.target.value,
-                                        hiddenColor: ""
-                                    })
-                                }}
-                                value={this.state.blue}
-                            ></input>
-                        </div>
-                        <div className="yourColor"
-                            style={{background: `rgba(${this.state.red}, ${this.state.green}, ${this.state.blue})`}}
-                        >
-                        </div>
-
-                        <div className="example">
-                            <Post200
-                                post_id={this.state.post_id}
-                                img={this.state.img}
-                                comments={this.state.comments}
-                                header={moment().format('MMMM Do YYYY, h:mm a')}
-                                hiddenColor={this.state.hiddenColor || `rgb(${this.state.red}, ${this.state.green}, ${this.state.blue})`}
-                                hiddenColorOpacity={this.state.hiddenColorOpacity}
-                                hiddenText={this.state.hiddenText}
-                                hiddenTextColor={this.state.hiddenTextColor}
-                                hiddenTextSize={this.state.hiddenTextSize}
+                            <SketchPicker
+                                color={ this.state.sketchPicker }
+                                onChangeComplete={ this.handleChangeComplete }
+                                width="200px"
                             />
+
+                            <div className="example">
+                                <Post200
+                                    post_id={this.state.post_id}
+                                    img={this.state.img}
+                                    comments={this.state.comments}
+                                    header={moment().format('MMMM Do YYYY, h:mm a')}
+                                    hiddenColor={this.state.sketchPicker}
+                                    hiddenColorOpacity={this.state.hiddenColorOpacity}
+                                    hiddenText={this.state.hiddenText}
+                                    hiddenTextColor={this.state.hiddenTextColor}
+                                    hiddenTextSize={this.state.hiddenTextSize}
+                                />
+                            </div>
                         </div>
+                        
                         
 
                     </div>
@@ -254,8 +239,17 @@ class New extends React.Component{
             )
         } else {
             return(
-                <div>
-                    THat's all
+                <div className="shit">
+                    <Header
+                        line={1}
+                    />
+                    <div className="newForm">
+                        <h2>THat's all!</h2>
+                        <br></br>
+                        <Link to="/">
+                            <h3>Go home</h3>
+                        </Link>
+                    </div>
                 </div>
             )
         }

@@ -4,12 +4,12 @@ import Comments from '../Comments';
 
 
 const Post200 = (props) => {
-    console.log("somthing.. upd")
     return(
         <div className="Post">
                 <div className="post-container">
                     <div className="post-header">
                         <div className="postTime">{props.header}</div>
+                        <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
                     </div>
                     <Picture
                         img={props.img}

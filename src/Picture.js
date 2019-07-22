@@ -48,7 +48,7 @@ class Picture extends React.Component{
                 // -------------
             >
                 {/* <LazyLoad offsetVertical={0}> */}
-                    <img src={`http://localhost:3001/public/img/${this.state.post_id}_${this.state.img}.jpg`} alt=""></img>
+                    <img src={`http://localhost:3001/public/min/${this.state.post_id}_${this.state.img}.jpg`} alt=""></img>
                 {/* </LazyLoad> */}
                 {/* HOVER EFFECT */}
                 <div className="pictureScript">
