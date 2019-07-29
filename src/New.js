@@ -6,7 +6,6 @@ import moment from 'moment'
 import Post200 from './Posts/Post200'
 import { SketchPicker } from 'react-color'
 import {Link} from 'react-router-dom';
-// import DND from './DND'
 const cookies = new Cookies();
 
 class New extends React.Component{
@@ -29,7 +28,10 @@ class New extends React.Component{
             red: 255,
             green: 255,
             blue: 255,
-            sketchPicker: "#fff"
+            sketchPicker: "#fff",
+            audioDND: "white",
+            fetchingAudio: false,
+            audioName: ""
         }
         this.send = this.send.bind(this);
         this.loadNudes = this.loadNudes.bind(this);
@@ -92,6 +94,31 @@ class New extends React.Component{
     handleChangeComplete = (color) => {
         this.setState({ sketchPicker: color.hex });
     };
+    handleChangeCompleteText = (color) => {
+        this.setState({ hiddenTextColor: color.hex });
+    };
+    loadAudio(){
+        const fun = ()=>{
+            this.setState({fetchingAudio: true})
+            const formData = new FormData();
+            formData.append('file', this.state.audioFile);
+            formData.append('name', this.state.audioName);
+            formData.append('id', this.state.post_id);
+            formData.append('access_token', cookies.get("access_token"));
+            formData.append('username', cookies.get("username"));
+
+            fetch('http://localhost:3001/uploadAudio', {
+                method: 'POST',
+                body: formData,
+            }).then(res=>res.json())
+            .then(data=>{
+                if(!data.err){
+                    this.send()
+                };
+            });
+        }
+        Refresh(fun)
+    }
     render(){
         if(!this.state.imageSent && !this.state.allDone){
             if(this.state.DNDstatus === "red"){
@@ -124,15 +151,46 @@ class New extends React.Component{
                     <div className="newForm">
                         <div className="dnd"
                             style={{background: this.state.DNDstatus}}
+                            onDoubleClick={()=>{
+                                document.querySelector(".newForm>input").click()
+                            }}
                         >
                         </div>
+                        <input type="file" style={{display: "none"}} 
+                            onChange={(e)=>{
+                                
+                                this.setState({
+                                    DNDstatus: "red",
+                                    data: e.target.files[0]
+                                })
+                            }}
+                        />
                     </div>
                 </div>
             )
         } else if(!this.state.allDone) {
             console.log(this.state.hiddenColor || `rgb(${this.state.red}, ${this.state.green}, ${this.state.blue})`)
             return(
-                <div className="shit">
+                <div className="shit"
+                onDropCapture={(e)=>{
+                    e.preventDefault();
+                    this.setState({
+                        audioDND: "red",
+                        audioFile: e.dataTransfer.files[0]
+                    })
+                }}
+                onDragOver={(event) => {
+                    event.preventDefault();
+                    this.setState({
+                        audioDND: "blue"
+                    })
+                }}
+                onDragLeave={()=>{
+                    this.setState({
+                        audioDND: "white"
+                    })
+                }}
+                >
                     <Header
                         line={1}
                     />
@@ -140,7 +198,11 @@ class New extends React.Component{
                         <form
                             onSubmit={(e)=>{
                                 e.preventDefault();
-                                this.send();
+                                if(this.state.audioFile){
+                                    this.loadAudio()
+                                } else {
+                                    this.send()
+                                }
                             }}
                         >
                             <label>hiddenText:</label>
@@ -206,15 +268,36 @@ class New extends React.Component{
                                 }}
                                 value={this.state.unauthCode}
                             />
+                            <div className="audioDND"
+                                style={{background: this.state.audioDND}}
+                            >
+                            </div>
+                            
+                            <input placeholder="audioName"
+                                onChange={(e)=>{
+                                    this.setState({
+                                        audioName: e.target.value
+                                    })
+                                }}
+                                value={this.state.audioName}
+                            />
                             <input type="submit" />
                         </form>
 
                         <div className="palette">
+                            <div>
                             <SketchPicker
                                 color={ this.state.sketchPicker }
                                 onChangeComplete={ this.handleChangeComplete }
                                 width="200px"
                             />
+                            <br></br>
+                            <SketchPicker 
+                                color={ this.state.hiddenTextColor }
+                                onChangeComplete={ this.handleChangeCompleteText }
+                                width="200px"
+                            />
+                            </div>
 
                             <div className="example">
                                 <Post200
@@ -238,12 +321,13 @@ class New extends React.Component{
                 </div>
             )
         } else {
+            window.scrollTo(0, 0);
             return(
                 <div className="shit">
                     <Header
                         line={1}
                     />
-                    <div className="newForm">
+                    <div className="allDone">
                         <h2>THat's all!</h2>
                         <br></br>
                         <Link to="/">
@@ -254,8 +338,6 @@ class New extends React.Component{
             )
         }
         
-    }
-    componentDidMount(){
     }
 }
 

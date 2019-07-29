@@ -69,7 +69,6 @@ class Comments extends React.Component{
                         loading={this.state.fetching?true:false}
                         >
                         <div className="commentsContainer">
-                            
                             {/* <div className="fetchingComment"
                                 style={{display: this.state.fetching ? "flex" : "none"}}
                             >
@@ -103,7 +102,7 @@ class Comments extends React.Component{
                         <div className="addComment">
                             <TextArea
                                 placeholder="Type your fun comment here"
-                                style={{ minHeight: 42, "border": "none" }}
+                                style={{ minHeight: 43, "border": "none" }}
                                 
                                 onChange={(e)=>{
                                     this.setState({

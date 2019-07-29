@@ -20,10 +20,11 @@ export default class Stat extends React.Component{
             }
         }).then(res=>res.json())
         .then(data=>{
-            console.log(data)
             this.setState({
                 data
             })
+            
+            window.scrollTo(0,0);
         })
     }
     render(){

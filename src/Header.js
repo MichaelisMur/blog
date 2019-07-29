@@ -32,7 +32,7 @@ class Header extends React.Component{
                 el.parentElement.style.color = "black";
             })
             document.querySelector(".Header").style.background = "white";
-            document.querySelector(".Header").style.borderBottom = "1px solid rgb(233, 233, 233)";
+            document.querySelector(".Header").style.borderBottom = "1px solid rgb(235, 235, 235)";
         } else {
             document.querySelectorAll(".headerLine").forEach(el=>{
                 el.style.background = "white";
@@ -46,19 +46,15 @@ class Header extends React.Component{
         if(cookies.get("username")){
             let left = [
                 {
-                    title: "Home page",
+                    title: "MichaelisMur",
                     destination: ""
                 },
             ]
             let right = [
                 {
-                    title: "Portfolio",
+                    title: "Contacts",
                     destination: "/stat"
                 },
-                {
-                    title: cookies.get("username"),
-                    destination: "/me"
-                }
             ]
             this.setState({
                 left,
@@ -142,7 +138,7 @@ class Header extends React.Component{
         // console.log(document.querySelector(".Header").clientHeight)
         this.setState({
             headerLine: {
-                height: this.state.line ? document.querySelector(".Header").clientHeight : ""
+                height: this.state.line ? document.querySelector(".Header").clientHeight-1 : ""
             }
         })
     }
