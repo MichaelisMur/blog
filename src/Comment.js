@@ -137,7 +137,7 @@ export default class Comment extends React.Component{
                     onClick={this.toggleOptions}
                 >
                     <div className="foo" style={{display: this.state.showOptions ? "flex" : "none"}}>
-                        <div style={{display: this.state.fetching ? "none" : "block"}}>
+                        <div style={{display: this.state.fetching ? "none" : "flex"}}>
                             <img src="http://localhost:3001/public/options.png" alt="options" />
                         </div>
                         <div style={{display: this.state.fetching ? "block" : "none"}}>

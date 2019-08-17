@@ -77,7 +77,7 @@ class Comments extends React.Component{
                             <div className="comms"
                                 style={{
                                     opacity: this.state.fetching ? "0.5" : "1",
-                                    padding: this.state.data.length?"7px 10px":"0 10px"
+                                    padding: this.state.data.length?"4px 10px":"0 10px"
                                 }}
                                 
                             >

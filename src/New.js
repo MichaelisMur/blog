@@ -158,7 +158,6 @@ class New extends React.Component{
                         </div>
                         <input type="file" style={{display: "none"}} 
                             onChange={(e)=>{
-                                
                                 this.setState({
                                     DNDstatus: "red",
                                     data: e.target.files[0]

@@ -1,7 +1,6 @@
 import React from 'react'
 import './style/App.css'
 import Main from './Main'
-// import Poster from './Poster'
 import Header from './Header'
 import Register from './Register'
 import Login from './Login'
@@ -12,10 +11,6 @@ import Stat from './Stat'
 import Webm from './Webm'
 import Audio from './Audio'
 import {Switch, Route} from 'react-router-dom'
-// import qs from 'query-string';
-// import Cookies from 'universal-cookie';
-// const cookies = new Cookies();
-
 
 class HomePage extends React.Component{
   constructor(props){
@@ -27,16 +22,9 @@ class HomePage extends React.Component{
     return(
       <div className="App">
       <Header />
-      {/* <Poster /> */}
       <Main/>
     </div>
     )
-  }
-  componentDidMount(){
-
-  }
-  componentWillUnmount(){
-
   }
 }
 
@@ -61,18 +49,18 @@ class App extends React.Component{
   }
   render(){
     return(
-      <Switch>
-        <Route path="/about" component={About} />
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        <Route path="/new" component={New} />
-        <Route path="/get" component={Get} />
-        <Route path="/request" component={Request} />
-        <Route path="/Stat" component={Stat} />
-        <Route path="/Webm" component={Webm} />
-        <Route path="/Audio" component={Audio} />
-        <Route path="/" component={HomePage} />
-      </Switch>
+        <Switch>
+          <Route path="/about" component={About} />
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          <Route path="/new" component={New} />
+          <Route path="/get" component={Get} />
+          <Route path="/request" component={Request} />
+          <Route path="/Stat" component={Stat} />
+          <Route path="/Webm" component={Webm} />
+          <Route path="/Audio" component={Audio} />
+          <Route path="/" component={HomePage} />
+        </Switch>
     )
   }
   componentDidMount(){

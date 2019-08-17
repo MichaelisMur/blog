@@ -16,8 +16,10 @@ class Header extends React.Component{
             ],
             showLogOut: 0,
             line: props.line,
-            headerLine: {}
+            headerLine: {},
+            isStatic: props.isStatic
         }
+        this.Scroll = this.Scroll.bind(this)
     }
     mouseOver(e){
         e.target.children[0].style.width="100%"
@@ -26,20 +28,22 @@ class Header extends React.Component{
         e.target.children[0].style.width="0%"
     }
     Scroll(){
-        if(window.scrollY>0){
-            document.querySelectorAll(".headerLine").forEach(el=>{
-                el.style.background = "black";
-                el.parentElement.style.color = "black";
-            })
-            document.querySelector(".Header").style.background = "white";
-            document.querySelector(".Header").style.borderBottom = "1px solid rgb(235, 235, 235)";
-        } else {
-            document.querySelectorAll(".headerLine").forEach(el=>{
-                el.style.background = "white";
-                el.parentElement.style.color = "white";
-            })
-            document.querySelector(".Header").style.background = "rgba(0,0,0,0)";
-            document.querySelector(".Header").style.borderBottom = "none";
+        if(!this.state.isStatic){
+            if(window.scrollY>0){
+                document.querySelectorAll(".headerLine").forEach(el=>{
+                    el.style.background = "black";
+                    el.parentElement.style.color = "black";
+                })
+                document.querySelector(".Header").style.background = "white";
+                document.querySelector(".Header").style.borderBottom = "1px solid rgb(235, 235, 235)";
+            } else {
+                document.querySelectorAll(".headerLine").forEach(el=>{
+                    el.style.background = "white";
+                    el.parentElement.style.color = "white";
+                })
+                document.querySelector(".Header").style.background = "rgba(0,0,0,0)";
+                document.querySelector(".Header").style.borderBottom = "none";
+            }
         }
     }
     componentWillMount(){
@@ -132,6 +136,14 @@ class Header extends React.Component{
         )
     }
     componentDidMount(){
+        if(this.state.isStatic){
+            document.querySelectorAll(".headerLine").forEach(el=>{
+                el.style.background = "black";
+                el.parentElement.style.color = "black";
+            })
+            document.querySelector(".Header").style.background = "white";
+            document.querySelector(".Header").style.borderBottom = "1px solid rgb(235, 235, 235)";
+        }
         if(document.querySelectorAll(".headerLine")){
             window.addEventListener("scroll", this.Scroll);
         }

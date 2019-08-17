@@ -28,7 +28,7 @@ class Post302 extends React.Component{
                     />
                     <div className="comments">
                         <div className="logTocomment">
-                            <a href="/">Log in</a> to see comments
+                            <a href="/login">Log in</a> to see this post's comments
                         </div>
                     </div>
                 </div>

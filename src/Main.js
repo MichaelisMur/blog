@@ -25,10 +25,17 @@ class Main extends React.Component{
             toShow: 2,
             endOfThePage: 0,
             fetching: 0,
-            loading: true
+            loading: true,
+            playing: null
         }
         this.fun = this.fun.bind(this);
         this.loadMore = this.loadMore.bind(this);
+        this.CB = this.CB.bind(this);
+    }
+    CB(param){
+        this.setState({
+            playing: param
+        })
     }
     render(){
         return(
@@ -59,6 +66,8 @@ class Main extends React.Component{
                                         hiddenTextColor={el.hiddenTextColor}
                                         hiddenTextSize={el.hiddenTextSize}
                                         audio={el.audio}
+                                        musicCB={this.CB}
+                                        playing={el.audio === this.state.playing}
                                     />
                                 )
                             } else if (el.code===201) { //authorized without comments
@@ -73,6 +82,9 @@ class Main extends React.Component{
                                         hiddenText={el.hiddenText}
                                         hiddenTextColor={el.hiddenTextColor}
                                         hiddenTextSize={el.hiddenTextSize}
+                                        audio={el.audio}
+                                        musicCB={this.CB}
+                                        playing={el.audio === this.state.playing}
                                     />
                                 )
                             } else if (el.code===202) { //authorized pic only
@@ -81,6 +93,14 @@ class Main extends React.Component{
                                         key={key}
                                         post_id={el.id}
                                         img={el.img}
+                                        header={el.header}
+                                    />
+                                )
+                            } else if (el.code===203) { //unauthorized nothing
+                                return (
+                                    <Post203
+                                        key={key}
+                                        post_id={el.id}
                                         header={el.header}
                                     />
                                 )
@@ -97,6 +117,9 @@ class Main extends React.Component{
                                         hiddenText={el.hiddenText}
                                         hiddenTextColor={el.hiddenTextColor}
                                         hiddenTextSize={el.hiddenTextSize}
+                                        audio={el.audio}
+                                        musicCB={this.CB}
+                                        playing={el.audio === this.state.playing}
                                     />
                                 )
                             } else if (el.code===301) { // unautorized without comments
@@ -112,6 +135,9 @@ class Main extends React.Component{
                                         hiddenText={el.hiddenText}
                                         hiddenTextColor={el.hiddenTextColor}
                                         hiddenTextSize={el.hiddenTextSize}
+                                        audio={el.audio}
+                                        musicCB={this.CB}
+                                        playing={el.audio === this.state.playing}
                                     />
                                 )
                             } else if (el.code===302) { //unauthorized pic only
@@ -126,14 +152,6 @@ class Main extends React.Component{
                             } else if (el.code===303) { //unauthorized nothing
                                 return (
                                     <Post303
-                                        key={key}
-                                        post_id={el.id}
-                                        header={el.header}
-                                    />
-                                )
-                            } else if (el.code===203) { //unauthorized nothing
-                                return (
-                                    <Post203
                                         key={key}
                                         post_id={el.id}
                                         header={el.header}
@@ -194,6 +212,7 @@ class Main extends React.Component{
                 }
             }).then(res=>res.json())
             .then(response=>{
+                console.log(response)
                 if(!response.error){
                     this.setState(prevState=>{
                         if(prevState.loading){
@@ -233,17 +252,12 @@ class Main extends React.Component{
             this.fun();
         }
     }
-    // parallax(){
-    //     document.querySelector(".Poster").style.top = window.pageYOffset*0.2 + "px"
-    // }
     componentDidMount(){
         window.addEventListener("scroll", this.loadMore);
-        // window.addEventListener("scroll", this.parallax);
         this.fun()
     }
     componentWillUnmount(){
         window.removeEventListener("scroll", this.loadMore)
-        // window.removeEventListener("scroll", this.parallax)
     }
 }
 

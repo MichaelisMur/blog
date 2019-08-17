@@ -6,20 +6,33 @@ export default class Audio extends React.Component{
         this.state = {
             name: props.name,
             playing: 0,
-            size: "30px",
+            size: "28px",
             sec: "00",
             min: "0",
             durSec: "00",
             durMin: "0",
+            musicCB: props.musicCB
         }
         this.enlargeButton = this.enlargeButton.bind(this);
         this.progress = this.progress.bind(this);
         this.load = this.load.bind(this);
+        this.play = this.play.bind(this);
+        this.stop = this.stop.bind(this);
+        this.myRef = React.createRef()
+    }
+    componentWillReceiveProps(props){
+        this.setState({playing: props.playing})
+        if(!this.myRef.current) return
+        if(props.playing){
+            this.myRef.current.play()
+        } else {
+            this.myRef.current.pause()
+        }
     }
     enlargeButton(){
         setTimeout(()=>{
             this.setState({
-                size: "30px"
+                size: "28px"
             })
         }, 100)
     }
@@ -37,12 +50,30 @@ export default class Audio extends React.Component{
     load(e){
         let target = e.target;
         this.setState(()=>{
-            let durMin = Math.floor(target.duration/60);
-            let durSec = Math.floor(target.duration%60);
+            let durMin = Math.floor(target.duration/60).toString();
+            let durSec = Math.floor(target.duration%60).toString();
             return({
-                durMin, durSec
+                durMin, durSec: durSec.length === 1 ? `0${durSec}` : durSec
             })
         })
+    }
+    play(){
+        this.myRef.current.play()
+        this.enlargeButton()
+        this.state.musicCB(this.state.name)
+        // this.setState({
+        //     size: "24px",
+        //     playing: 1
+        // })
+    }
+    stop(){
+        this.myRef.current.pause()
+        this.enlargeButton()
+        this.state.musicCB("!!!GOVNOCODE!!!")
+        // this.setState({
+        //     size: "24px",
+        //     playing: 0
+        // })
     }
     render(){
         if(this.state.name) return(
@@ -50,34 +81,24 @@ export default class Audio extends React.Component{
                 <div className="audioContainer">
                     <audio
                         src={`http://localhost:3001/public/audio/${this.state.name}.mp3`}
-                        id="audio"
                         onTimeUpdate={this.progress}
                         onLoadedMetadata={this.load}
+                        ref={this.myRef}
                     />
                     <div className="playContainer">
                         <div className="playpause"
                             onClick={(e)=>{
-                                this.setState(prevState=>{
-                                    if(prevState.playing){
-                                        document.querySelector("#audio").pause()
-                                        this.enlargeButton()
-                                        return({
-                                            size: "26px",
-                                            playing: 0
-                                        })
-                                    } else {
-                                        document.querySelector("#audio").play()
-                                        this.enlargeButton()
-                                        return({
-                                            size: "26px",
-                                            playing: 1
-                                        })
-                                    }
-                                })
+                                // this.setState(prevState=>{
+                                if(this.state.playing){
+                                    this.stop()
+                                } else {
+                                    this.play()
+                                }
+                                // })
 
                             }}
-                            onMouseOver={()=>this.setState({size: "32px"})}
-                            onMouseLeave={()=>this.setState({size: "30px"})}
+                            onMouseOver={()=>this.setState({size: "30px"})}
+                            onMouseLeave={()=>this.setState({size: "28px"})}
                             style={{
                                 backgroundImage: this.state.playing ? "url(http://localhost:3001/public/pause.png)" : "url(http://localhost:3001/public/play.png)",
                                 width: this.state.size,
@@ -86,7 +107,7 @@ export default class Audio extends React.Component{
                         ></div>
                     </div>
                     <div className="songTitle">
-                        people are strange - the Doors
+                        {this.state.name}
                     </div>
                     <a href={`http://localhost:3001/public/audio/${this.state.name}.mp3`} target="_blank" rel="noopener noreferrer" download={`${this.state.name}.mp3`}>
                         {/* <div > */}

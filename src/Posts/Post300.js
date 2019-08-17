@@ -1,50 +1,38 @@
-import React from 'react';
-import Picture from '../Picture';
-import Comments from '../Comments';
+import React from 'react'
+import Picture from '../Picture'
+import Comments from '../Comments'
+import Audio from '../Audio'
 
-class Post300 extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            post_id: props.post_id,
-            img: props.img,
-            comments: props.comments,
-            header: props.header,
-            yourComment: "",
-            hiddenColor: props.hiddenColor,
-            hiddenColorOpacity: props.hiddenColorOpacity,
-            hiddenText: props.hiddenText,
-            hiddenTextColor: props.hiddenTextColor,
-            hiddenTextSize: props.hiddenTextSize,
-        }
-    }
-    render(){
-        return(
-            <div className="Post">
-                <div className="post-container">
-                    <div className="post-header">
-                        <div className="postTime">{this.state.header}</div>
-                    </div>
-                    <Picture
-                        img={this.state.img}
-                        hiddenColor={this.state.hiddenColor}
-                        hiddenColorOpacity={this.state.hiddenColorOpacity}
-                        hiddenText={this.state.hiddenText}
-                        hiddenTextColor={this.state.hiddenTextColor}
-                        hiddenTextSize={this.state.hiddenTextSize}
-                        post_id={this.state.post_id}
+const Post300 = (props) => {
+    return(
+        <div className="Post">
+            <div className="post-container">
+                <div className="post-header">
+                    <div className="postTime">{props.header}</div>
+                </div>
+                <Picture
+                    img={props.img}
+                    hiddenColor={props.hiddenColor}
+                    hiddenColorOpacity={props.hiddenColorOpacity}
+                    hiddenText={props.hiddenText}
+                    hiddenTextColor={props.hiddenTextColor}
+                    hiddenTextSize={props.hiddenTextSize}
+                    post_id={props.post_id}
+                />
+                <Audio name={props.audio}
+                    musicCB={props.musicCB}
+                    playing={props.playing}
+                />
+                <div className="comments">
+                    <Comments
+                        data={props.comments}
+                        shown={0}
+                        post_id={props.post_id}
                     />
-                    <div className="comments">
-                        <Comments
-                            data={this.state.comments}
-                            shown={0}
-                            post_id={this.state.post_id}
-                        />
-                    </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Post300;

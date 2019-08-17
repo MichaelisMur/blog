@@ -21,7 +21,10 @@ const Post200 = (props) => {
                         hiddenTextSize={props.hiddenTextSize}
                         post_id={props.post_id}
                     />
-                    <Audio name={props.audio} />
+                    <Audio name={props.audio}
+                        musicCB={props.musicCB}
+                        playing={props.playing}
+                    />
                     <div className="comments">
                         <Comments
                             data={props.comments}

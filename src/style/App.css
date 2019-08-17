@@ -195,21 +195,23 @@
     white-space: pre-wrap
 }
 .comments>.restrictedComs{
-    font-size: 18px;
+    font-size: 12px;
     color: gray;
-    padding: 10px 50px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    margin: auto;
+    width: 60%;
 }
 .comment>.info{
     width: 100%
 }
 .restrictedImg{
-    width: 45px;
+    width: 22px;
+    padding: 6px 0;
 }
 .restrictedLine{
-    padding: 10px 20px;
+    padding: 4px 20px;
     text-align: center;
 }
 .hiddenTextSign{
@@ -501,7 +503,7 @@
 }
 .audioContainer{
     width: 480px;
-    height: 40px;
+    height: 36px;
     padding: 0 10px;
     margin: auto;
     background: white;
@@ -517,15 +519,15 @@
     background: orange;
 }
 .playpause{
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background: url(http://localhost:3001/public/play.png);
     transition-duration: 0.1s;
     background-position: center;
     background-size: cover;
 }
 .playContainer{
-    min-width: 36px;
+    min-width: 32px;
     height: 36px;
     display: flex;
     justify-content: center;
@@ -558,4 +560,31 @@
     border: 1px solid lightgray;
     margin: 15px 0 5px;
     transition-duration: 0.5s;
+}
+.loginContainer{
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: white;
+    padding: 7px;
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    margin: 40px auto;
+}
+.loginContainer>form>*{
+    width: 100%;
+}
+.loginContainer>form>input{
+    padding: 4px;
+    border: 1px solid rgb(255, 199, 199);
+    border-radius: 2px;
+}
+.loginError{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
 }
