@@ -41,7 +41,36 @@ class Main extends React.Component{
         return(
             <div className="MainContainer">
                 <div className="Poster">
+                    <div className="posterText">
+                        <div className="wow">
+                            <div className="posterTitle">
+                                Mikhail Murashkin's Personal Blog
+                            </div>
+                            <div className="posterInfo">
+                                <div>This is the place where I shitpost</div><div>
+                                Here you can find photos of me 
+                                and my ugly friends, some music 
+                                maybe and an enormous amount
+                                of useful information
+                                </div>
+                                <div className="posterButton">
+                                    <div className="curtainButton"
+                                        onClick={()=>{
+                                            window.scrollTo({ top: document.querySelector(".Main").offsetTop, behavior: 'smooth' })
+                                        }}
+                                    >
 
+                                    </div>
+                                    <div className="backgroundButton">
+
+                                    </div>
+                                    <div className="posterButtonSign">
+                                        Let's rock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="Main">
                     <div className="posts">
@@ -252,12 +281,42 @@ class Main extends React.Component{
             this.fun();
         }
     }
+    damn(e){
+        if(window.innerWidth/2 > e.clientX){
+            let shit = Math.sqrt((window.innerWidth/2 - e.clientX))
+            document.querySelector(".posterText>.wow").style.left = "-" + shit + "px";
+        } else {
+            let shit = Math.sqrt(Math.abs(window.innerWidth/2 - e.clientX))
+            document.querySelector(".posterText>.wow").style.left = "+" + shit + "px";
+        }
+
+        if(window.innerHeight/2 > e.clientY){
+            let shit = Math.sqrt((window.innerHeight/2 - e.clientY))
+            document.querySelector(".posterText>.wow").style.top = "-" + shit + "px";
+        } else {
+            let shit = Math.sqrt(Math.abs(window.innerHeight/2 - e.clientY))
+            document.querySelector(".posterText>.wow").style.top = "+" + shit + "px";
+        }
+
+    }
+    ok(){
+        document.querySelector(".posterText .backgroundButton").style.left = "0";
+        document.querySelector(".posterText .posterButtonSign").style.color = "black";
+    }
+    ok2(){
+        document.querySelector(".posterText .backgroundButton").style.left = "-100%";
+        document.querySelector(".posterText .posterButtonSign").style.color = "white";
+    }
     componentDidMount(){
         window.addEventListener("scroll", this.loadMore);
+        window.addEventListener("mousemove", this.damn);
+        document.querySelector(".posterText .curtainButton").addEventListener("mouseover", this.ok);
+        document.querySelector(".posterText .curtainButton").addEventListener("mouseout", this.ok2);
         this.fun()
     }
     componentWillUnmount(){
         window.removeEventListener("scroll", this.loadMore)
+        window.removeEventListener("mousemove", this.damn);
     }
 }
 
