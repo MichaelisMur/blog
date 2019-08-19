@@ -10,6 +10,7 @@ import Request from './Request'
 import Stat from './Stat'
 import Webm from './Webm'
 import Audio from './Audio'
+import Edit from './Edit'
 import {Switch, Route} from 'react-router-dom'
 
 class HomePage extends React.Component{
@@ -59,6 +60,7 @@ class App extends React.Component{
           <Route path="/Stat" component={Stat} />
           <Route path="/Webm" component={Webm} />
           <Route path="/Audio" component={Audio} />
+          <Route path="/edit/:id" component={Edit} />
           <Route path="/" component={HomePage} />
         </Switch>
     )

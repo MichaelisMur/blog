@@ -2,38 +2,48 @@ import React from 'react'
 import Picture from '../Picture'
 import Comments from '../Comments'
 import Audio from '../Audio'
+import PostSettings from '../PostSettings'
 
 
 const Post200 = (props) => {
-    return(
-        <div className="Post">
-                <div className="post-container">
-                    <div className="post-header">
-                        <div className="postTime">{props.header}</div>
-                        <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
-                    </div>
-                    <Picture
-                        img={props.img}
-                        hiddenColor={props.hiddenColor}
-                        hiddenColorOpacity={props.hiddenColorOpacity}
-                        hiddenText={props.hiddenText}
-                        hiddenTextColor={props.hiddenTextColor}
-                        hiddenTextSize={props.hiddenTextSize}
-                        post_id={props.post_id}
-                    />
-                    <Audio name={props.audio}
-                        musicCB={props.musicCB}
-                        playing={props.playing}
-                    />
-                    <div className="comments">
-                        <Comments
-                            data={props.comments}
+    // console.log(props)
+    if(!props.img){
+        return(<div></div>)
+    } else
+    {
+        return(
+            <div className="Post">
+                    <div className="post-container">
+                        <div className="post-header">
+                            <div className="postTime">{props.header}</div>
+                            <div className="postSettings">
+                                <PostSettings id={props.post_id} />
+                                <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
+                            </div>
+                        </div>
+                        <Picture
+                            img={props.img}
+                            hiddenColor={props.hiddenColor}
+                            hiddenColorOpacity={props.hiddenColorOpacity}
+                            hiddenText={props.hiddenText}
+                            hiddenTextColor={props.hiddenTextColor}
+                            hiddenTextSize={props.hiddenTextSize}
                             post_id={props.post_id}
                         />
+                        <Audio name={props.audio}
+                            musicCB={props.musicCB}
+                            playing={props.playing}
+                        />
+                        <div className="comments">
+                            <Comments
+                                data={props.comments}
+                                post_id={props.post_id}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-    )
+        )
+    }
 }
 
 export default Post200;

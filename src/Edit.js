@@ -1,101 +1,68 @@
 import React from 'react'
 import Header from './Header'
-import Refresh from './Refresh'
-import moment from 'moment'
-import Post200 from './Posts/Post200'
 import { SketchPicker } from 'react-color'
-import {Link} from 'react-router-dom';
+import Post200 from './Posts/Post200'
 import Cookies from 'universal-cookie'
+import Refresh from './Refresh'
 const cookies = new Cookies();
 
-class New extends React.Component{
-    constructor(){
-        super();
+export default class Edit extends React.Component{
+    constructor(props){
+        super(props)
         this.state={
-            hiddenText: "Sample",
-            authCode: 0,
-            unauthCode: 0,
-            hiddenTextSize: "30",
-            hiddenTextColor: "black",
-            hiddenColorOpacity: "0.5",
-            DNDstatus: "white",
+            id: props.match.params.id,
+            hiddenText: "",
+            hiddenTextSize: "",
+            hiddenTextColor: "",
+            hiddenColor: "",
+            hiddenColorOpacity: "",
+            authCode: "",
+            unauthCode: "",
+            audioName: "",
+            sketchPicker: "",
             img: "",
-            imageSent: false,
-            imageUrl: "",
-            post_id: "",
             comments: [],
-            allDone: false,
-            red: 255,
-            green: 255,
-            blue: 255,
-            sketchPicker: "#fff",
+            header: "",
             audioDND: "white",
-            fetchingAudio: false,
-            audioName: ""
+            audioChanged: false
         }
-        this.send = this.send.bind(this);
-        this.loadNudes = this.loadNudes.bind(this);
         this.handleChangeComplete = this.handleChangeComplete.bind(this);
         this.handleChangeCompleteText = this.handleChangeCompleteText.bind(this);
+        this.loadAudio = this.loadAudio.bind(this);
+        this.send = this.send.bind(this);
     }
-    componentWillMount(){
-
-    }
-    send(){
-        console.log(cookies.get("access_token"));
-        const fun = (refreshFunction)=>{
-            fetch("http://localhost:3001/new", {
-                method: 'POST',
+    componentDidMount(){
+        let fun = (refreshFunction) => {
+            fetch("http://localhost:3001/getPost", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
-                    id: this.state.post_id,
-                    hiddenColor: this.state.sketchPicker,
-                    hiddenColorOpacity: `${this.state.hiddenColorOpacity}`,
-                    hiddenText: `${this.state.hiddenText}`,
-                    hiddenTextSize: this.state.hiddenTextSize,
-                    hiddenTextColor: this.state.hiddenTextColor,
-                    authCode: this.state.authCode,
-                    unauthCode: this.state.unauthCode,
+                    id: this.state.id,
                     access_token: cookies.get("access_token"),
-                    username: cookies.get("username"),
-                }),
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => res.json())
-            .then(response => {
-                if(response.error === "access token expired") return refreshFunction(fun)
-                this.setState({
-                    allDone: true
+                    username: cookies.get("username")
                 })
-            })
-            .catch(error => console.error('Error:', error));
-        }
-        Refresh(fun)
-    }
-    loadNudes(){
-        const fun = (refreshFunction)=>{
-            const formData = new FormData();
-            formData.append('file', this.state.data);
-            formData.append('name', this.state.name);
-            formData.append('access_token', cookies.get("access_token"));
-            formData.append('username', cookies.get("username"));
-
-            fetch('http://localhost:3001/upload', {
-                method: 'POST',
-                body: formData,
             }).then(res=>res.json())
             .then(data=>{
                 if(data.error === "access token expired") return refreshFunction(fun)
-                if(!data.error){
-                    this.setState({
-                        imageSent: true,
-                        img: data.img,
-                        post_id: data.id
-                    })
-                } else {
-                    window.location = "/"
-                }
-            });
+                if(!data._id) return window.location="/"
+                // console.log(data)
+                this.setState({
+                    hiddenText: data.hiddenText,
+                    hiddenTextSize: data.hiddenTextSize,
+                    hiddenTextColor: data.hiddenTextColor,
+                    sketchPicker: data.hiddenColor,
+                    hiddenColorOpacity: data.hiddenColorOpacity,
+                    authCode: data.authCode,
+                    unauthCode: data.unauthCode,
+                    audioName: data.audio,
+                    img: data.img,
+                    comments: data.comments,
+                    header: data.header,
+                    allDone: false
+                })
+            })
         }
         Refresh(fun)
     }
@@ -111,7 +78,7 @@ class New extends React.Component{
             const formData = new FormData();
             formData.append('file', this.state.audioFile);
             formData.append('name', this.state.audioName);
-            formData.append('id', this.state.post_id);
+            formData.append('id', this.state.id);
             formData.append('access_token', cookies.get("access_token"));
             formData.append('username', cookies.get("username"));
 
@@ -121,70 +88,53 @@ class New extends React.Component{
             }).then(res=>res.json())
             .then(data=>{
                 if(data.error === "access token expired") return refreshFunction(fun)
-                if(!data.error){
+                if(!data.err){
                     this.send()
                 };
             });
         }
         Refresh(fun)
     }
+    send(){
+        const fun = (refreshFunction)=>{
+            fetch("http://localhost:3001/update", {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: this.state.id,
+                    hiddenColor: this.state.sketchPicker,
+                    hiddenColorOpacity: this.state.hiddenColorOpacity,
+                    hiddenText: this.state.hiddenText,
+                    hiddenTextSize: this.state.hiddenTextSize,
+                    hiddenTextColor: this.state.hiddenTextColor,
+                    authCode: this.state.authCode,
+                    unauthCode: this.state.unauthCode,
+                    access_token: cookies.get("access_token"),
+                    username: cookies.get("username")
+                }),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
+            .then(response => {
+                if(response.error === "access token expired") return refreshFunction(fun)
+                this.setState({
+                    allDone: true
+                })
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        Refresh(fun)
+    }
     render(){
-        if(!this.state.imageSent && !this.state.allDone){
-            if(this.state.DNDstatus === "red"){
-                this.loadNudes()
-            }
-            return(
-                <div className="shit"
-                onDropCapture={(e)=>{
-                    e.preventDefault();
-                    this.setState({
-                        DNDstatus: "red",
-                        data: e.dataTransfer.files[0]
-                    })
-                }}
-                onDragOver={(event) => {
-                    event.preventDefault();
-                    this.setState({
-                        DNDstatus: "blue"
-                    })
-                }}
-                onDragLeave={()=>{
-                    this.setState({
-                        DNDstatus: "white"
-                    })
-                }}
-                >
-                    <Header
-                        line={1}
-                    />
-                    <div className="newForm">
-                        <div className="dnd"
-                            style={{background: this.state.DNDstatus}}
-                            onDoubleClick={()=>{
-                                document.querySelector(".newForm>input").click()
-                            }}
-                        >
-                        </div>
-                        <input type="file" style={{display: "none"}} 
-                            onChange={(e)=>{
-                                this.setState({
-                                    DNDstatus: "red",
-                                    data: e.target.files[0]
-                                })
-                            }}
-                        />
-                    </div>
-                </div>
-            )
-        } else if(!this.state.allDone) {
-            console.log(this.state.hiddenColor || `rgb(${this.state.red}, ${this.state.green}, ${this.state.blue})`)
-            return(
-                <div className="shit"
+        if(this.state.allDone) return window.location="/"
+        return(
+            <div className="shit"
                 onDropCapture={(e)=>{
                     e.preventDefault();
                     this.setState({
                         audioDND: "red",
-                        audioFile: e.dataTransfer.files[0]
+                        audioFile: e.dataTransfer.files[0],
+                        audioChanged: true
                     })
                 }}
                 onDragOver={(event) => {
@@ -206,11 +156,12 @@ class New extends React.Component{
                         <form
                             onSubmit={(e)=>{
                                 e.preventDefault();
-                                if(this.state.audioFile){
+                                if(this.state.audioChanged){
                                     this.loadAudio()
                                 } else {
                                     this.send()
                                 }
+                                console.log(this.state)
                             }}
                         >
                             <label>hiddenText:</label>
@@ -309,10 +260,10 @@ class New extends React.Component{
 
                             <div className="example">
                                 <Post200
-                                    post_id={this.state.post_id}
+                                    post_id={this.state.id}
                                     img={this.state.img}
                                     comments={this.state.comments}
-                                    header={moment().format('MMMM Do YYYY, h:mm a')}
+                                    header={this.state.header}
                                     hiddenColor={this.state.sketchPicker}
                                     hiddenColorOpacity={this.state.hiddenColorOpacity}
                                     hiddenText={this.state.hiddenText}
@@ -327,26 +278,6 @@ class New extends React.Component{
                     </div>
                     
                 </div>
-            )
-        } else {
-            window.scrollTo(0, 0);
-            return(
-                <div className="shit">
-                    <Header
-                        line={1}
-                    />
-                    <div className="allDone">
-                        <h2>THat's all!</h2>
-                        <br></br>
-                        <Link to="/">
-                            <h3>Go home</h3>
-                        </Link>
-                    </div>
-                </div>
-            )
-        }
-        
+        )
     }
 }
-
-export default New;

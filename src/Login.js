@@ -58,18 +58,19 @@ class Login extends React.Component{
                             }
                             }).then(res => res.json())
                             .then(response => {
-                                if(response.code === 200){
+                                if(!response.error){
+                                    console.log(response.admin)
                                     this.setState({success: true})
                                     cookies.set("username", response.username, { path: '/' })
-                                    cookies.set("id", response.id, { path: '/' })
                                     cookies.set("access_token", response.access_token, { path: '/' })
                                     cookies.set("refresh_token", response.refresh_token, { path: '/' })
+                                    cookies.set("admin", response.admin, { path: '/' })
                                     window.location = "/"
                                 } else {
                                     this.setState({
                                         username: "",
                                         password: "",
-                                        error: response.message
+                                        error: response.error
                                     })
                                 }
                                 console.log(response)

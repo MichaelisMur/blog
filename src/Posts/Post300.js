@@ -9,6 +9,9 @@ const Post300 = (props) => {
             <div className="post-container">
                 <div className="post-header">
                     <div className="postTime">{props.header}</div>
+                    <div className="postSettings">
+                        <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
+                    </div>
                 </div>
                 <Picture
                     img={props.img}

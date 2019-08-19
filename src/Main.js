@@ -10,7 +10,7 @@ import Post303 from './Posts/Post303'
 import Refresh from './Refresh'
 import Cookies from 'universal-cookie'
 import {Icon} from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom'
 // import Poster from './Poster'
 const cookies = new Cookies()
 
@@ -40,7 +40,9 @@ class Main extends React.Component{
     render(){
         return(
             <div className="MainContainer">
-                <div className="Poster">
+                <div className="Poster"
+                style={{display: "none"}}
+                >
                     <div className="posterText">
                         <div className="wow">
                             <div className="posterTitle">
@@ -227,7 +229,6 @@ class Main extends React.Component{
         const fun = (refreshFunction) => {
             if(this.state.endOfThePage || this.state.fetching) return
             this.setState({fetching: 1});
-            console.log("fetching");
             fetch("http://localhost:3001/get", {
                 method: "POST",
                 body: JSON.stringify({
@@ -317,6 +318,8 @@ class Main extends React.Component{
     componentWillUnmount(){
         window.removeEventListener("scroll", this.loadMore)
         window.removeEventListener("mousemove", this.damn);
+        document.querySelector(".posterText .curtainButton").removeEventListener("mouseover", this.ok);
+        document.querySelector(".posterText .curtainButton").removeEventListener("mouseout", this.ok2);
     }
 }
 

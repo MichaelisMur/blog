@@ -26,6 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
 }
 .Header{
     width: 100%;
@@ -140,11 +141,21 @@
 }
 .Post .post-header{
     width: 100%;
-    padding: 12px 10px;
+    padding: 0 10px;
     border-radius: 3px 3px 0 0;
     min-height: 40px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    color: black;
+    height: 45px;
+}
+.post-header a{
+    color: #c5c4c4;
+    transition-duration: 0.1s;
+    padding: 5px;
+}
+.post-header a:hover{
     color: black;
 }
 .Picture img{
@@ -664,4 +675,21 @@
     z-index: 10;
     top: 0;
     left: 0;
+}
+.postSettings img{
+    width: 24px;
+    height: 24px;
+    padding: 3px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+.postSettings>.PostSettingsContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.postSettings{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

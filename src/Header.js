@@ -74,12 +74,8 @@ class Header extends React.Component{
             ]
             let right = [
                 {
-                    title: "Portfolio",
+                    title: "Secret Stuff",
                     destination: "/stat"
-                },
-                {
-                    title: "Sign Up",
-                    destination: "/register"
                 },
                 {
                     title: "Sign In",
