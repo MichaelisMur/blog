@@ -2,11 +2,11 @@ import React from 'react'
 import Picture from '../Picture'
 import Comments from '../Comments'
 import Audio from '../Audio'
+import VipInfo from '../VipInfo'
 import PostSettings from '../PostSettings'
 
 
 const Post200 = (props) => {
-    // console.log(props)
     if(!props.img){
         return(<div></div>)
     } else
@@ -18,6 +18,7 @@ const Post200 = (props) => {
                             <div className="postTime">{props.header}</div>
                             <div className="postSettings">
                                 <PostSettings id={props.post_id} />
+                                <VipInfo code={props.vip ? props.authCode : undefined} />
                                 <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
                             </div>
                         </div>

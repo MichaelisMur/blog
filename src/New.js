@@ -135,24 +135,24 @@ class New extends React.Component{
             }
             return(
                 <div className="shit"
-                onDropCapture={(e)=>{
-                    e.preventDefault();
-                    this.setState({
-                        DNDstatus: "red",
-                        data: e.dataTransfer.files[0]
-                    })
-                }}
-                onDragOver={(event) => {
-                    event.preventDefault();
-                    this.setState({
-                        DNDstatus: "blue"
-                    })
-                }}
-                onDragLeave={()=>{
-                    this.setState({
-                        DNDstatus: "white"
-                    })
-                }}
+                    onDropCapture={(e)=>{
+                        e.preventDefault();
+                        this.setState({
+                            DNDstatus: "red",
+                            data: e.dataTransfer.files[0]
+                        })
+                    }}
+                    onDragOver={(event) => {
+                        event.preventDefault();
+                        this.setState({
+                            DNDstatus: "blue"
+                        })
+                    }}
+                    onDragLeave={()=>{
+                        this.setState({
+                            DNDstatus: "white"
+                        })
+                    }}
                 >
                     <Header
                         line={1}

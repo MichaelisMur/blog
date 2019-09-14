@@ -11,6 +11,10 @@ import Stat from './Stat'
 import Webm from './Webm'
 import Audio from './Audio'
 import Edit from './Edit'
+import News from './News'
+import NewsPage from './NewsPage'
+import Secret from './Secret'
+import AddNews from './AddNews'
 import {Switch, Route} from 'react-router-dom'
 
 class HomePage extends React.Component{
@@ -57,10 +61,14 @@ class App extends React.Component{
           <Route path="/new" component={New} />
           <Route path="/get" component={Get} />
           <Route path="/request" component={Request} />
-          <Route path="/Stat" component={Stat} />
+          <Route path="/stat" component={Stat} />
           <Route path="/Webm" component={Webm} />
-          <Route path="/Audio" component={Audio} />
+          <Route path="/audio" component={Audio} />
           <Route path="/edit/:id" component={Edit} />
+          <Route path="/news/:link" component={NewsPage} />
+          <Route path="/news" component={News} />
+          <Route path="/addnews" component={AddNews} />
+          <Route path="/secret" component={Secret} />
           <Route path="/" component={HomePage} />
         </Switch>
     )

@@ -15,6 +15,7 @@ import {Link} from 'react-router-dom'
 const cookies = new Cookies()
 
 class Main extends React.Component{
+    _isMounted = false;
     constructor(props){
         super(props);
         this.state = {
@@ -25,12 +26,14 @@ class Main extends React.Component{
             toShow: 2,
             endOfThePage: 0,
             fetching: 0,
-            loading: true,
-            playing: null
+            // loading: true,
+            playing: null,
+            news: []
         }
         this.fun = this.fun.bind(this);
         this.loadMore = this.loadMore.bind(this);
         this.CB = this.CB.bind(this);
+        this.turnOffAnimation = this.turnOffAnimation.bind(this);
     }
     CB(param){
         this.setState({
@@ -40,8 +43,11 @@ class Main extends React.Component{
     render(){
         return(
             <div className="MainContainer">
+                <div className="someSpace">
+
+                </div>
                 <div className="Poster"
-                style={{display: "none"}}
+                // style={{display: "none"}}
                 >
                     <div className="posterText">
                         <div className="wow">
@@ -77,7 +83,7 @@ class Main extends React.Component{
                 <div className="Main">
                     <div className="posts">
                         <div className="loading"
-                                style={{display: this.state.loading?"flex":"none"}}
+                                style={{display: this.state.fetching?"flex":"none"}}
                             >
                             <div className="loadingIcon">
                             </div>
@@ -99,6 +105,9 @@ class Main extends React.Component{
                                         audio={el.audio}
                                         musicCB={this.CB}
                                         playing={el.audio === this.state.playing}
+                                        code={el.code}
+                                        authCode={el.authCode}
+                                        vip={cookies.get("vip")}
                                     />
                                 )
                             } else if (el.code===201) { //authorized without comments
@@ -205,10 +214,17 @@ class Main extends React.Component{
                             <div className="importantShadow">
                                 <div className="importantContainer">
                                     <div className="importantLinkTitle">Last news</div>
-                                    <Link to="/stat"><div className="importantLink">party 12.08.2019 !you're invited!</div></Link>
-                                    <Link to="/stat"><div className="importantLink">my music broadcast demo</div></Link>
-                                    <Link to="/stat"><div className="importantLink">Данил, верни сотку</div></Link>
-                                    <Link to="/stat"><div className="importantLink" style={{
+                                    <div className="newsLoading"
+                                        style={{
+                                            display: this.state.news.length ? "none" : "flex"
+                                        }}
+                                    >
+                                        <Icon size='large' loading name='spinner' />
+                                    </div>
+                                    {this.state.news.map((el, key)=>(
+                                        <Link to={`/news/${el.link}`} key={key}><div className="importantLink">{el.title}</div></Link>
+                                    ))}
+                                    <Link to="/news"><div className="importantLink" style={{
                                         textDecoration: "underline",
                                         color: "pink"
                                     }}>Show all...</div></Link>
@@ -242,11 +258,12 @@ class Main extends React.Component{
                 }
             }).then(res=>res.json())
             .then(response=>{
-                console.log(response)
+                // console.log(response)
                 if(!response.error){
+                    if(!this._isMounted) return
                     this.setState(prevState=>{
                         if(prevState.loading){
-                            window.scrollTo(0,0)
+                            // window.scrollTo(0,0)
                         }
                         if(!response.length){
                             return({
@@ -256,6 +273,7 @@ class Main extends React.Component{
                             })
                         }
                         let temp = [...prevState.data, ...response];
+                        if(this.state.data.length===0) this.loadNews()
                         return({
                             index: prevState.index + prevState.toShow,
                             data: temp,
@@ -267,6 +285,13 @@ class Main extends React.Component{
                     if((window.pageYOffset + window.innerHeight) === document.body.scrollHeight){
                         this.fun()
                     }
+                } else if(response.error==="wrong token"){
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    window.location = "/";
                 } else {
                     console.log("НА ВЗЛЕТ ЕБАТЬ");
                     this.setState({fetching: 0})
@@ -276,6 +301,41 @@ class Main extends React.Component{
             .catch(error=>{console.log(error)})
         }
         Refresh(fun);
+    }
+    loadNews(){
+        const load = (refreshFunction) => {
+            fetch("http://localhost:3001/lastNews", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: cookies.get("username"),
+                    access_token: cookies.get("access_token")
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res=>res.json())
+            .then(response=>{
+                if(!response.error){
+                    console.log(response)
+                    if(!this._isMounted) return
+                    this.setState({
+                        news: response
+                    })
+                } else if(response.error==="wrong token"){
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    window.location = "/";
+                } else {
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    this.setState({fetching: 0})
+                    refreshFunction(load)
+                }
+            })
+        }
+        Refresh(load);
     }
     loadMore(){
         if(document.body.scrollHeight - (window.pageYOffset + window.innerHeight) < 300){
@@ -300,6 +360,7 @@ class Main extends React.Component{
         }
 
     }
+    //poster button animation
     ok(){
         document.querySelector(".posterText .backgroundButton").style.left = "0";
         document.querySelector(".posterText .posterButtonSign").style.color = "black";
@@ -308,18 +369,42 @@ class Main extends React.Component{
         document.querySelector(".posterText .backgroundButton").style.left = "-100%";
         document.querySelector(".posterText .posterButtonSign").style.color = "white";
     }
+    parallax(e){
+        // console.log(window.pageYOffset);
+        document.querySelector(".Poster").style.top = window.pageYOffset*0.4 + "px";
+    }
     componentDidMount(){
-        window.addEventListener("scroll", this.loadMore);
-        window.addEventListener("mousemove", this.damn);
-        document.querySelector(".posterText .curtainButton").addEventListener("mouseover", this.ok);
-        document.querySelector(".posterText .curtainButton").addEventListener("mouseout", this.ok2);
-        this.fun()
+        this._isMounted = true;
+        this.turnOffAnimation()
+        this.parallax()
+        window.addEventListener("resize", this.turnOffAnimation)
+        window.addEventListener("scroll", this.loadMore)
+        if(window.innerWidth>=1100) window.addEventListener("mousemove", this.damn)
+        document.querySelector(".posterText .curtainButton").addEventListener("mouseover", this.ok)
+        document.querySelector(".posterText .curtainButton").addEventListener("mouseout", this.ok2)
+        this.fun();
+        window.addEventListener("scroll", this.parallax)
+    }
+    turnOffAnimation(){
+        if(window.innerWidth<1050){
+            document.querySelector(".posterText>.wow").style.left = ""
+            document.querySelector(".posterText>.wow").style.right = ""
+            document.querySelector(".posterText>.wow").style.top = ""
+            window.removeEventListener("mousemove", this.damn)
+        } else {
+            if(!document.querySelector(".posterText>.wow")) return
+            document.querySelector(".posterText>.wow").style.position = "absolute!important"
+            window.addEventListener("mousemove", this.damn)
+        }
     }
     componentWillUnmount(){
+        this._isMounted = false;
         window.removeEventListener("scroll", this.loadMore)
-        window.removeEventListener("mousemove", this.damn);
-        document.querySelector(".posterText .curtainButton").removeEventListener("mouseover", this.ok);
-        document.querySelector(".posterText .curtainButton").removeEventListener("mouseout", this.ok2);
+        window.removeEventListener("mousemove", this.damn)
+        document.querySelector(".posterText .curtainButton").removeEventListener("mouseover", this.ok)
+        document.querySelector(".posterText .curtainButton").removeEventListener("mouseout", this.ok2)
+        window.removeEventListener("scroll", this.parallax)
+        window.removeEventListener("resize", this.turnOffAnimation)
     }
 }
 

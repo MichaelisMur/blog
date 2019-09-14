@@ -27,8 +27,8 @@ class Register extends React.Component{
                     isStatic={true}
                 />
                 <div className="loginContainer">
-                    REGISTER
                     <form
+                        style={{width: "100%"}}
                         onSubmit={(e)=>{
                             e.preventDefault();
                             if(!this.state.usernameTyped || this.state.username.length<3) return this.setState({
@@ -60,20 +60,19 @@ class Register extends React.Component{
                                     this.setState({
                                         username: "",
                                         password: "",
+                                        passwordagain: "",
                                         error: response.error
                                     })
                                 }
                             })
                             .catch(error => console.error('Error:', error));
                         }}
-                    >
-                        <label>username</label>
-                        <input name="username" placeholder="username"
+                    >    
+                        {/* <div style={{textAlign: "center", padding: "5px 0"}}>
+                            REGISTER
+                        </div> */}
+                        <input name="username" placeholder="Username"
                             autoFocus
-                            style={{
-                                border: this.state.usernameErr ? "1px solid rgb(255, 132, 132)" : "1px solid lightgray",
-                                background: this.state.usernameErr ? "rgb(255, 199, 199)" : "white"
-                            }}
                             onChange={(e)=>{
                                 this.setState({
                                     username: e.target.value,
@@ -84,12 +83,15 @@ class Register extends React.Component{
                             }}
                             value = {this.state.username}
                         />
-                        <label>password</label>
-                        <input name="password" placeholder="password"
+                        <div
                             style={{
-                                border: this.state.passwordErr ? "1px solid rgb(255, 132, 132)" : "1px solid lightgray",
-                                background: this.state.passwordErr ? "rgb(255, 199, 199)" : "white"
+                                display: this.state.usernameErr?"block":"none"
                             }}
+                        >
+                            Enter your username, nigga :/
+                        </div>
+                        <input name="password" placeholder="Password"
+                            type="password"
                             onChange={(e)=>{
                                 this.setState({
                                     password: e.target.value,
@@ -100,10 +102,33 @@ class Register extends React.Component{
                             }}
                             value = {this.state.password}
                         />
-                        <div className="loginError">
+                        <div
+                            style={{
+                                display: this.state.passwordErr?"block":"none"
+                            }}
+                        >
+                            Das Passwort bitte
+                        </div>
+                        <input name="password" placeholder="Password again"
+                            type="password"
+                            onChange={(e)=>{
+                                this.setState({
+
+                                })
+                            }}
+                            value = {this.state.passwordagain}
+                        />
+                        <div
+                            style={{
+                                display: this.state.error?"block":"none"
+                            }}
+                        >
                             {this.state.error}
                         </div>
-                        <input type="submit" />
+                        
+                        <div style={{textAlign: "center", padding: "5px 0"}}>
+                            <input type="submit" value="Sign Up" className="loginButton" />
+                        </div>
                     </form>
                 </div>
             </div>

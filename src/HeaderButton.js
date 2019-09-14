@@ -3,7 +3,11 @@ import {Link} from 'react-router-dom';
 
 const HeaderButton = (props) => {
     return(
-        <Link to={props.destination}>
+        <Link to={props.destination}
+            onClick={()=>{
+                    window.scrollTo({ top: 0})
+            }}
+        >
             <div className="headerPart"
                 onMouseOver={props.mouseOver}
                 onMouseOut={props.mouseOut}

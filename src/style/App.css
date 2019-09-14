@@ -8,8 +8,8 @@
     margin: auto;
     justify-content: space-between;
     position: relative;
-    margin-top: 300px;
     padding-top: 100px;
+    /* padding-top: 100px; */
 }
 .MainContainer{
     background: rgb(255, 255, 255);
@@ -18,7 +18,7 @@
 .Poster{
     width: 100%;
     height: 500px;
-    min-height: 80vh;
+    min-height: 90vh;
     background-image: url(http://localhost:3001/public/background.png);
     background-position: bottom;
     background-repeat: no-repeat;
@@ -27,6 +27,8 @@
     justify-content: center;
     align-items: center;
     user-select: none;
+    position: absolute!important;
+    top: 0;
 }
 .Header{
     width: 100%;
@@ -35,7 +37,7 @@
     position: fixed;
     z-index: 20;
     background: rgba(0,0,0,0);
-    transition-duration: 0.3s;
+    transition-duration: 0.5s;
     user-select: none;
     top: 0;
 }
@@ -45,6 +47,8 @@
 }
 .innerHeader>.right{
     display: flex;
+    align-items: center;
+    position: relative;
 }
 .innerHeader{
     width: 948px;
@@ -58,6 +62,16 @@
     position: relative;
     cursor: pointer;
     color: white;
+}
+.innerHeader .headerPartUser{
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .headerPart>.headerLine{
     position: absolute;
@@ -136,7 +150,6 @@
 .pictureScript>.curtain{
     width: 100%;
     height: 100%;
-    background: blue;
     transition-duration: 0.5s;
 }
 .Post .post-header{
@@ -153,9 +166,24 @@
 .post-header a{
     color: #c5c4c4;
     transition-duration: 0.1s;
-    padding: 5px;
+}
+.postSettings>a{
+    padding: 0 3px;
 }
 .post-header a:hover{
+    color: black;
+}
+.logTocomment a{
+    color: #c5c4c4;
+}
+.importantContainer a{
+    color: black;
+}
+.importantContainer a:hover{
+    text-decoration: underline;
+    color: inherit!important;
+}
+.logTocomment a:hover{
     color: black;
 }
 .Picture img{
@@ -215,22 +243,21 @@
 }
 .comments>.restrictedComs{
     font-size: 12px;
-    color: gray;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
-    width: 60%;
+    width: 84%;
 }
 .comment>.info{
     width: 100%
 }
 .restrictedImg{
-    width: 22px;
-    padding: 6px 0;
+    width: 34px;
+    padding: 10px 8px;
 }
 .restrictedLine{
-    padding: 4px 20px;
+    padding: 4px 5px;
     text-align: center;
 }
 .hiddenTextSign{
@@ -415,7 +442,7 @@
 .newForm>form>input, .newForm>form>textarea{
     padding: 4px;
     margin-bottom: 6px;
-    border: 1px solid lightgray;
+    border: 1px solid #c5c4c4;
     border-radius: 2px;
 }
 .foo img{
@@ -464,12 +491,12 @@
 .importantLinkTitle{
     font-weight: bold;
     font-size: 18px;
-    padding: 10px 0;
+    padding: 6px 0;
     text-align: center;
 }
 .importantLink{
     font-size: 15px;
-    padding: 3px 0;
+    padding: 6px 0;
     text-align: left;
     text-align: center;
 }
@@ -489,25 +516,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     padding: 12px 30px 22px;
     border-radius: 3px
-}
-@media only screen and (max-width: 950px) {
-    .Main>.info{
-        display: none!important;
-    }
-    .Main{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    .posts{
-        width: 90%!important;
-    }
-    .post-container{
-        width: 100%!important;
-    }
-    .comment .comOptions{
-        display: none!important;
-    }
 }
 .videoContent{
     display: flex;
@@ -538,22 +546,22 @@
     background: orange;
 }
 .playpause{
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     background: url(http://localhost:3001/public/play.png);
     transition-duration: 0.1s;
     background-position: center;
     background-size: cover;
 }
 .playContainer{
-    min-width: 32px;
-    height: 36px;
+    min-width: 28px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .songTitle{
-    padding: 0 10px;
+    padding: 0 3px;
     width: 100%
 }
 .audioContainer .time{
@@ -565,7 +573,7 @@
     min-width: 10px;
 }
 .audioContainer .downloadAudio{
-    height: 20px;
+    height: 18px;
     padding: 0 10px;
     display: flex;
     justify-content: center;
@@ -588,16 +596,38 @@
     background: white;
     padding: 7px;
     border-radius: 3px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    user-select: none;
     margin: 40px auto;
 }
-.loginContainer>form>*{
+.loginContainer>form>input{
     width: 100%;
 }
+.loginContainer>form input::placeholder{
+    color: rgb(190, 190, 190);
+    font-size: 16px;
+}
 .loginContainer>form>input{
-    padding: 4px;
-    border: 1px solid rgb(255, 199, 199);
-    border-radius: 2px;
+    padding: 10px 12px 8px;
+    margin: 12px 0;
+    /* border: 1px solid rgb(131, 131, 131)!important; */
+    /* border-radius: 2px; */
+    border: 0.5px solid black;
+}
+/* .loginContainer>form> input:focus{
+    border: 1px solid black!important;
+} */
+.loginContainer>form .loginButton{
+    width: 160px;
+    padding: 10px;
+    background: black;
+    /* background: white; */
+    color: white;
+    /* color: black; */
+    /* font-weight: bold; */
+    border: none;
+    /* font-size: 18px; */
+    border-radius: 20px;
+    cursor: pointer;
 }
 .loginError{
     width: 100%;
@@ -621,7 +651,7 @@
     color: white;
     font-size: 50px;
     /* width: 100%; */
-    border-top: 1px solid white;
+    /* border-top: 1px solid white; */
     border-bottom: 1px solid white;
     text-align: center;
     padding: 20px 10px
@@ -632,7 +662,7 @@
     font-size: 26px;
     max-width: 80%;
     line-height: 1em;
-    padding: 40px 0;
+    padding: 30px 0;
     text-align: center;
 }
 .posterText .posterButton{
@@ -692,4 +722,277 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.headerPartUser svg{
+    padding: 5px;
+    transition-duration: 0.5s;
+}
+.headerPartUser svg:hover{
+    padding: 4px;
+}
+.UserMenu{
+    width: 100%;
+    /* background: white; */
+    position: absolute;
+    top: -25px;
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+}
+.headerMenuTriangle{
+    z-index: 101;
+}
+.headerMenuTriangle>div{
+    width: 13px;
+    height: 14px;
+    float: right;
+    margin-right: 3px;
+}
+.shitHeader{
+    width: 100%;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid rgb(205, 205, 205);
+    z-index: 30;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+}
+.headerPartUserCurtain{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+}
+.UserMenuButtons{
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 24px 0;
+    /* position: relative; */
+}
+.UserMenuButtons:first-child{
+    padding: 10px 24px 8px;
+    border-bottom: 1px solid rgb(241, 241, 241)
+}
+.UserMenuButtons:last-child{
+    padding: 8px 24px 8px;
+}
+.UserMenuStar{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    right: 24px;
+}
+.UserMenuButtonsLine{
+    width: 0;
+    height: 2px;
+    background: black;
+    margin: auto;
+    transition-duration: 0.5s;
+    pointer-events: none;
+}
+.UserMenuButtonsText a{
+    color: black!important;
+}
+.UserMenuButtonsText{
+    display: inline-block;
+    position: relative;
+    text-align: left;
+}
+.headerUserVip{
+    font-size: 10px;
+}
+.VipInfo{
+    height: 24px;
+    width: 24px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    padding: 3px;
+    margin: 0px;
+}
+.headerUsername{
+    font-weight: bold;
+}
+.signedInAs{
+    font-size: 14px;
+}
+.NewsMain{
+    width: 900px;
+    background: white;
+    margin: auto;
+    margin-top: 160px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 10px;
+    min-height: 1000px;
+}
+.NewsBlockPage{
+    width: 900px;
+    background: white;
+    margin: auto;
+    margin-top: 160px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px 10px;
+}
+.newContainer{
+    width: 100%;
+    padding-bottom: 30px;
+    position: relative;
+    user-select: none;
+}
+.new>.newText{
+    position: absolute;
+    top: 60px;
+    height: 80px;
+    width: 100%;
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.newContainer>.new{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition-duration: 0.5s;
+    height: 160px;
+    position: relative;
+}
+.new>.newTitle{
+    padding: 0 30px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+.new>.newLink{
+    padding: 0 20px;
+    font-size: 20px;
+    font-weight: bold;
+    height: 60px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+.newLink .arrowDown{
+    width: 30px;
+    height: 30px;
+    background-image: url(http://localhost:3001/public/arrow.png);
+    background-position: center;
+    background-size: cover;
+}
+.new a, .new a:hover{
+    color: inherit;
+}
+.new .newsLink{
+    display: inline-block;
+    padding-bottom: 20px;
+    font-weight: bold;
+    transition-duration: 0.1s;
+}
+.new .newsBody{
+    height: 100%;
+    max-height: 40px;
+    overflow: hidden;
+    transition-duration: 0.3s;
+    pointer-events: none;
+}
+.newsForm{
+    width: 900px;
+    margin: 120px auto 0;
+    background: white;
+    border-radius: 3px;
+    padding: 20px;
+}
+.newsForm input, .newsForm textarea{
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 4px;
+    border-radius: 2px;
+    border: 1px solid rgb(228, 225, 225);
+    transition-duration: 0.3s;
+}
+.newsForm input:hover, .newsForm textarea:hover{
+    border: 1px solid rgb(204, 204, 204);
+}
+.loadingCurtains{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.newsLoading{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.someSpace{
+    min-height: 90vh;
+    width: 100%;
+}
+.createAcc{
+    border-top: 1px solid black;
+    padding-top: 35px;
+    color: black;
+    transition-duration: 0.3s;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+}
+@media only screen and (max-width: 950px) {
+    .Main>.info{
+        display: none!important;
+    }
+    .Main{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .posts{
+        width: 90%!important;
+    }
+    .post-container{
+        width: 100%!important;
+    }
+    .comment .comOptions{
+        display: none!important;
+    }
+}
+@media only screen and (max-width: 950px) {
+    .posterText{
+        width: 100%;
+    }
+    .posterTitle{
+        line-height: 1em;
+        border-bottom: none!important;
+        font-size: 36px!important;
+    }
+    .posterInfo{
+        font-size: 20px!important;
+        padding: 20px 0!important;
+    }
 }

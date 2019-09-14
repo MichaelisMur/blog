@@ -1,7 +1,9 @@
 import React from 'react';
 import HeaderButton from './HeaderButton';
 import Logout from './Logout';
+import User from './User';
 import Cookies from 'universal-cookie';
+import {Link} from 'react-router-dom'
 const cookies = new Cookies();
 
 class Header extends React.Component{
@@ -14,12 +16,15 @@ class Header extends React.Component{
             right: [
 
             ],
-            showLogOut: 0,
             line: props.line,
             headerLine: {},
-            isStatic: props.isStatic
+            isStatic: props.isStatic,
+            color: "white",
+            menu: false
         }
         this.Scroll = this.Scroll.bind(this)
+        this.toggleMenu = this.toggleMenu.bind(this)
+        this.hideMenu = this.hideMenu.bind(this)
     }
     mouseOver(e){
         e.target.children[0].style.width="100%"
@@ -30,6 +35,9 @@ class Header extends React.Component{
     Scroll(){
         if(!this.state.isStatic){
             if(window.scrollY>0){
+                this.setState({
+                    color: "black"
+                })
                 document.querySelectorAll(".headerLine").forEach(el=>{
                     el.style.background = "black";
                     el.parentElement.style.color = "black";
@@ -37,6 +45,9 @@ class Header extends React.Component{
                 document.querySelector(".Header").style.background = "white";
                 document.querySelector(".Header").style.borderBottom = "1px solid rgb(235, 235, 235)";
             } else {
+                this.setState({
+                    color: "white"
+                })
                 document.querySelectorAll(".headerLine").forEach(el=>{
                     el.style.background = "white";
                     el.parentElement.style.color = "white";
@@ -51,19 +62,18 @@ class Header extends React.Component{
             let left = [
                 {
                     title: "MichaelisMur",
-                    destination: ""
+                    destination: "/"
                 },
             ]
             let right = [
                 {
-                    title: "Contacts",
-                    destination: "/stat"
+                    title: "Secret Stuff",
+                    destination: "/secret"
                 },
             ]
             this.setState({
                 left,
-                right,
-                showLogOut: 1
+                right
             })
         } else {
             let left = [
@@ -85,8 +95,13 @@ class Header extends React.Component{
             this.setState({
                 left,
                 right,
-                showLogOut: 0})
+            })
         }
+    }
+    toggleMenu(){
+        this.setState(prevState=>({
+            menu: prevState.menu ? false : true
+        }))
     }
     render(){
         return(
@@ -110,6 +125,51 @@ class Header extends React.Component{
                             ))}
                         </div>
                         <div className="right">
+                            <div className="UserMenuStar">
+                                <div className="UserMenu"
+                                    style={{display: this.state.menu?"flex":"none"}}
+                                >
+                                    
+                                    <div className="headerMenuTriangle">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="rgb(205, 205, 205)">
+                                                <polygon points="50 15, 100 100, 0 100"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div className="shitHeader">
+                                        <div className="UserMenuButtons">
+                                            <div className="UserMenuButtonsText">
+                                                <div className="signedInAs">Signed in as</div>
+                                                
+                                                <div className="headerUsername">{cookies.get("username")}</div>
+                                            </div>
+                                        </div>
+                                        <div className="UserMenuButtons">
+                                            <div className="UserMenuButtonsText"
+                                                onMouseOver={this.mouseOver}
+                                                onMouseOut={this.mouseOut}
+                                            >
+                                                <Link to="/stat">
+                                                    Settings<div className="UserMenuButtonsLine"></div>
+                                                </Link>
+                                                
+                                            </div>
+                                        </div>
+                                        <Logout mouseOver={this.mouseOver} mouseOut={this.mouseOut} />
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div className="headerPartUserCurtain"
+                                style={{display: this.state.menu?"block":"none"}}
+                                onClick={()=>{
+                                    this.setState({menu: false})
+                                }}
+                            >
+
+                            </div>
                             {this.state.right.map((el, key)=>(
                                 <HeaderButton
                                     title={el.title}
@@ -119,11 +179,13 @@ class Header extends React.Component{
                                     mouseOut={this.mouseOut}
                                 />
                             ))}
-                            <Logout
-                                showLogOut={this.state.showLogOut}
-                                mouseOver={this.mouseOver}
-                                mouseOut={this.mouseOut}
+                            <User color={this.state.color}
+                                toggleMenu={this.toggleMenu}
+                                username={cookies.get("username")}
+                                vip={cookies.get("vip")}
+                                admin={cookies.get("admin")}
                             />
+                            
                         </div>
                     </div>
                 </div>
@@ -131,8 +193,14 @@ class Header extends React.Component{
             
         )
     }
+    hideMenu(){
+        this.setState({menu: false})
+    }
     componentDidMount(){
         if(this.state.isStatic){
+            this.setState({
+                color: "black"
+            })
             document.querySelectorAll(".headerLine").forEach(el=>{
                 el.style.background = "black";
                 el.parentElement.style.color = "black";
@@ -149,9 +217,11 @@ class Header extends React.Component{
                 height: this.state.line ? document.querySelector(".Header").clientHeight-1 : ""
             }
         })
+        window.addEventListener("scroll", this.hideMenu);
     }
     componentWillUnmount(){
         window.removeEventListener("scroll", this.Scroll);
+        window.removeEventListener("scroll", this.hideMenu);
     }
 }
 

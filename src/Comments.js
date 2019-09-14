@@ -28,6 +28,7 @@ class Comments extends React.Component{
         }
     }
     addComment(){
+        if(!this.state.yourComment) return
         this.setState({fetching: true})
         const fun = (refreshFunction) => {
             fetch("http://localhost:3001/comment", {
@@ -114,7 +115,11 @@ class Comments extends React.Component{
                             />
                             {/* <textarea type="text" placeholder="Type your fun comment here"
                             /> */}
-                            <button type="submit" className="postCommentButton">Post</button>
+                            <button type="submit" className="postCommentButton"
+                                style={{
+                                    color: this.state.yourComment ? "black" : "lightgray"
+                                }}
+                            >Post</button>
                         </div>
                     </Form>
                 </div>
