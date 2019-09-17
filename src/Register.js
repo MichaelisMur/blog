@@ -9,17 +9,32 @@ class Register extends React.Component{
         this.state = {
             username: "",
             password: "",
+            passwordRepeat: "",
             responded: 0,
             response: "",
             error: "",
             success: false,
             usernameErr: false,
+            passwordRepeatErr: false,
             passwordErr: false,
             usernameTyped: false,
-            passwordTyped: false
+            passwordTyped: false,
+            passwordRepeatTyped: false,
+            fetching: 0
         }
     }
     render(){
+        if(this.state.allDone) return(
+            <div>
+                <Header
+                    line={true}
+                    isStatic={true}
+                />
+                <div className="loginContainer">
+                    All done, nigger!
+                </div>
+            </div>
+        )
         return(
             <div>
                 <Header
@@ -31,13 +46,18 @@ class Register extends React.Component{
                         style={{width: "100%"}}
                         onSubmit={(e)=>{
                             e.preventDefault();
+                            if(this.state.fetching) return
                             if(!this.state.usernameTyped || this.state.username.length<3) return this.setState({
                                 usernameErr: true
-                            })
+                            });
                             if(!this.state.passwordTyped || this.state.password.length<3) return this.setState({
                                 passwordErr: true
                             })
-                            if(this.state.usernameErr || this.state.passwordErr) return
+                            if(!this.state.passwordRepeatTyped || this.state.passwordRepeat.length<3) return this.setState({
+                                passwordErr: true
+                            })
+                            if(this.state.usernameErr || this.state.passwordErr || this.state.passwordRepeatErr) return
+                            this.setState({fetching: 1})
                             fetch("http://localhost:3001/register", {
                                 method: 'POST',
                                 body: JSON.stringify({
@@ -49,28 +69,25 @@ class Register extends React.Component{
                                 }
                             }).then(res => res.json())
                             .then(response => {
+                                this.setState({fetching: 0})
                                 if(!response.error){
                                     this.setState({ allDone: true })
                                     cookies.set('username', response.username, { path: '/' });
                                     cookies.set("id", response.id, { path: '/' });
                                     cookies.set('access_token', response.access_token, { path: '/' });
                                     cookies.set('refresh_token', response.refresh_token, { path: '/' });
-                                    console.log(response);
+                                    cookies.set('vip', 0, { path: '/' });
+                                    window.location = "/"
                                 } else {
                                     this.setState({
                                         username: "",
-                                        password: "",
-                                        passwordagain: "",
                                         error: response.error
                                     })
                                 }
                             })
                             .catch(error => console.error('Error:', error));
                         }}
-                    >    
-                        {/* <div style={{textAlign: "center", padding: "5px 0"}}>
-                            REGISTER
-                        </div> */}
+                    >
                         <input name="username" placeholder="Username"
                             autoFocus
                             onChange={(e)=>{
@@ -90,6 +107,15 @@ class Register extends React.Component{
                         >
                             Enter your username, nigga :/
                         </div>
+                        <div
+                            style={{
+                                display: this.state.error?"block":"none"
+                            }}
+                        >
+                            {this.state.error}
+                        </div>
+
+
                         <input name="password" placeholder="Password"
                             type="password"
                             onChange={(e)=>{
@@ -97,8 +123,14 @@ class Register extends React.Component{
                                     password: e.target.value,
                                     error: "",
                                     passwordErr: false,
+                                    passwordRepeatErr: false,
                                     passwordTyped: true
                                 })
+                            }}
+                            onBlur={()=>{
+                                this.setState(prevState=>({
+                                    passwordRepeatErr: prevState.password === prevState.passwordRepeat || !prevState.passwordRepeatTyped ? false : true
+                                }))
                             }}
                             value = {this.state.password}
                         />
@@ -109,33 +141,44 @@ class Register extends React.Component{
                         >
                             Das Passwort bitte
                         </div>
-                        <input name="password" placeholder="Password again"
+
+
+                        <input placeholder="Repeat password"
                             type="password"
                             onChange={(e)=>{
                                 this.setState({
-
+                                    passwordRepeat: e.target.value,
+                                    error: "",
+                                    passwordRepeatErr: false,
+                                    passwordRepeatTyped: true
                                 })
                             }}
-                            value = {this.state.passwordagain}
+                            onBlur={()=>{
+                                this.setState(prevState=>({
+                                    passwordRepeatErr: prevState.password === prevState.passwordRepeat ? false : true
+                                }))
+                            }}
+                            value = {this.state.passwordRepeat}
                         />
                         <div
                             style={{
-                                display: this.state.error?"block":"none"
+                                display: this.state.passwordRepeatErr?"block":"none"
                             }}
                         >
-                            {this.state.error}
+                            Passwords doesn't match
                         </div>
                         
-                        <div style={{textAlign: "center", padding: "5px 0"}}>
+                        <div style={{
+                                textAlign: "center",
+                                padding: "5px 0",
+                                opacity: this.state.fetching ? "0.6" : "1"
+                            }}>
                             <input type="submit" value="Sign Up" className="loginButton" />
                         </div>
                     </form>
                 </div>
             </div>
         )
-    }
-    componentDidMount(){
-        cookies.set('myCat', "meow", { path: '/' });
     }
 }
 

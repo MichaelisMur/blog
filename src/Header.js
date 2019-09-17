@@ -85,7 +85,7 @@ class Header extends React.Component{
             let right = [
                 {
                     title: "Secret Stuff",
-                    destination: "/stat"
+                    destination: "/secret"
                 },
                 {
                     title: "Sign In",
@@ -150,9 +150,9 @@ class Header extends React.Component{
                                                 onMouseOver={this.mouseOver}
                                                 onMouseOut={this.mouseOut}
                                             >
-                                                <Link to="/stat">
+                                                {/* <Link to="/stat">
                                                     Settings<div className="UserMenuButtonsLine"></div>
-                                                </Link>
+                                                </Link> */}
                                                 
                                             </div>
                                         </div>

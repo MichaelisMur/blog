@@ -1,4 +1,7 @@
-import React from 'react';
+import React from 'react'
+import Refresh from './Refresh'
+import Cookies from 'universal-cookie'
+const cookies = new Cookies()
 
 export default class StatEl extends React.Component{
     constructor(props){
@@ -10,22 +13,40 @@ export default class StatEl extends React.Component{
         this.changeRights = this.changeRights.bind(this)
     }
     changeRights(){
-        fetch("http://localhost:3001/changeRights", {
-            method: "POST",
-            body: JSON.stringify({
-                username: this.state.username,
-                vip: this.state.vip
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res=>res.json())
-        .then(data=>{
-            console.log(data)
-            this.setState({
-                vip: data.vip
+        const fun = (refreshFunction) => {
+            fetch("http://localhost:3001/changeRights", {
+                method: "POST",
+                body: JSON.stringify({
+                    usernameEl: this.state.username,
+                    vip: this.state.vip,
+                    access_token: cookies.get("access_token"),
+                    username: cookies.get("username")
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res=>res.json())
+            .then(data=>{
+
+                
+                if(!data.error){
+                    this.setState({
+                        vip: data.vip
+                    })
+                    window.scrollTo(0,0)
+                } else if(data.error==="access token expired"){
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    this.setState({fetching: 0})
+                    refreshFunction(fun)
+                } else if(data.error==="no admin"){
+                    window.location = "/"
+                } else {
+                    window.location = "/"
+                }
             })
-        })
+        }
+        
+        Refresh(fun)
     }
     render(){
         return(

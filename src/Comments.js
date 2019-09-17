@@ -1,10 +1,10 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import Refresh from './Refresh';
-import CommentContainer from './CommentContainer';
+import React from 'react'
+import {Link} from 'react-router-dom'
+import Cookies from 'universal-cookie'
+import Refresh from './Refresh'
+import CommentContainer from './CommentContainer'
 import { TextArea, Form} from 'semantic-ui-react'
-const cookies = new Cookies();
+const cookies = new Cookies()
 
 class Comments extends React.Component{
     constructor(props){

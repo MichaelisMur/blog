@@ -1,5 +1,5 @@
-import React from 'react';
-import Cookies from 'universal-cookie';
+import React from 'react'
+import Cookies from 'universal-cookie'
 import Header from './Header'
 import {Link} from 'react-router-dom'
 import {Icon} from 'semantic-ui-react'

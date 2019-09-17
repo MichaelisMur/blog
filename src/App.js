@@ -70,6 +70,7 @@ class App extends React.Component{
           <Route path="/addnews" component={AddNews} />
           <Route path="/secret" component={Secret} />
           <Route path="/" component={HomePage} />
+          <Route component={Secret} />
         </Switch>
     )
   }

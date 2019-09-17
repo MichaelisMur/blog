@@ -11,7 +11,6 @@ import Refresh from './Refresh'
 import Cookies from 'universal-cookie'
 import {Icon} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
-// import Poster from './Poster'
 const cookies = new Cookies()
 
 class Main extends React.Component{
@@ -28,7 +27,8 @@ class Main extends React.Component{
             fetching: 0,
             // loading: true,
             playing: null,
-            news: []
+            news: [],
+            newsLoaded: 0
         }
         this.fun = this.fun.bind(this);
         this.loadMore = this.loadMore.bind(this);
@@ -46,9 +46,11 @@ class Main extends React.Component{
                 <div className="someSpace">
 
                 </div>
-                <div className="Poster"
-                // style={{display: "none"}}
-                >
+                <div className="Poster">
+                {/* <div className="meBlock">
+                    <div className="test">
+                    </div>
+                </div> */}
                     <div className="posterText">
                         <div className="wow">
                             <div className="posterTitle">
@@ -56,8 +58,24 @@ class Main extends React.Component{
                             </div>
                             <div className="posterInfo">
                                 <div>This is the place where I shitpost</div><div>
-                                Here you can find photos of me 
-                                and my ugly friends, some music 
+                                Here you can find photos of <span
+                                    // style={{
+                                    //     color: "rgb(208, 208, 208)",
+                                    //     position: "relative"
+                                    // }}
+                                    // onMouseOver={(e)=>{
+                                    //     e.target.style.color = "red"
+                                    //     document.querySelector(".meBlock").style.width = "800px";
+                                    //     document.querySelector(".meBlock").style.height = "800px";
+                                    // }}
+                                    // onMouseLeave={(e)=>{
+                                    //     e.target.style.color = "rgb(208, 208, 208)"
+                                    //     document.querySelector(".meBlock").style.width = "0px";
+                                    //     document.querySelector(".meBlock").style.height = "0px";
+                                    // }}
+                                >
+                                    me
+                                </span> and my ugly friends, some music 
                                 maybe and an enormous amount
                                 of useful information
                                 </div>
@@ -216,7 +234,7 @@ class Main extends React.Component{
                                     <div className="importantLinkTitle">Last news</div>
                                     <div className="newsLoading"
                                         style={{
-                                            display: this.state.news.length ? "none" : "flex"
+                                            display: this.state.newsLoaded ? "none" : "flex"
                                         }}
                                     >
                                         <Icon size='large' loading name='spinner' />
@@ -316,9 +334,9 @@ class Main extends React.Component{
             }).then(res=>res.json())
             .then(response=>{
                 if(!response.error){
-                    console.log(response)
                     if(!this._isMounted) return
                     this.setState({
+                        newsLoaded: 1,
                         news: response
                     })
                 } else if(response.error==="wrong token"){
