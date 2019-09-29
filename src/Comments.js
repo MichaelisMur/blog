@@ -52,8 +52,16 @@ class Comments extends React.Component{
                         opened: true,
                         loadMoreShown: false
                     });
-                } else {
+                } else if(response.error==="access token expired"){
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
                     refreshFunction(fun)
+                } else {
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    window.location = "/";
                 }
             })
         }

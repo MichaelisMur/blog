@@ -32,6 +32,7 @@ export default class Edit extends React.Component{
         this.send = this.send.bind(this);
     }
     componentDidMount(){
+        window.scrollTo(0,0)
         let fun = (refreshFunction) => {
             fetch("http://localhost:3001/getPost", {
                 method: "POST",

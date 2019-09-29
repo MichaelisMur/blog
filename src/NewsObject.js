@@ -15,7 +15,7 @@ export default class NewsObject extends React.Component{
                     if((e.target.className === "newText" && this.state.height === "60px")) return e.preventDefault
                     this.setState(prevState=>{
                         return({
-                            height: prevState.height === "60px" ? "140px" : "60px"
+                            height: prevState.height === "60px" ? "130px" : "60px"
                         })
                     })
                 }}

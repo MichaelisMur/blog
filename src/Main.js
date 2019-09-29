@@ -28,7 +28,8 @@ class Main extends React.Component{
             // loading: true,
             playing: null,
             news: [],
-            newsLoaded: 0
+            newsLoaded: 0,
+            somethingLoaded: 0
         }
         this.fun = this.fun.bind(this);
         this.loadMore = this.loadMore.bind(this);
@@ -53,27 +54,15 @@ class Main extends React.Component{
                 </div> */}
                     <div className="posterText">
                         <div className="wow">
+                            {/* <div className="wowPicture">
+
+                            </div> */}
                             <div className="posterTitle">
                                 Mikhail Murashkin's Personal Blog
                             </div>
                             <div className="posterInfo">
                                 <div>This is the place where I shitpost</div><div>
-                                Here you can find photos of <span
-                                    // style={{
-                                    //     color: "rgb(208, 208, 208)",
-                                    //     position: "relative"
-                                    // }}
-                                    // onMouseOver={(e)=>{
-                                    //     e.target.style.color = "red"
-                                    //     document.querySelector(".meBlock").style.width = "800px";
-                                    //     document.querySelector(".meBlock").style.height = "800px";
-                                    // }}
-                                    // onMouseLeave={(e)=>{
-                                    //     e.target.style.color = "rgb(208, 208, 208)"
-                                    //     document.querySelector(".meBlock").style.width = "0px";
-                                    //     document.querySelector(".meBlock").style.height = "0px";
-                                    // }}
-                                >
+                                Here you can find photos of <span>
                                     me
                                 </span> and my ugly friends, some music 
                                 maybe and an enormous amount
@@ -90,7 +79,7 @@ class Main extends React.Component{
                                     <div className="backgroundButton">
 
                                     </div>
-                                    <div className="posterButtonSign">
+                                    <div className="posterButtonSign enlargeCursor">
                                         Let's rock
                                     </div>
                                 </div>
@@ -280,10 +269,8 @@ class Main extends React.Component{
                 if(!response.error){
                     if(!this._isMounted) return
                     this.setState(prevState=>{
-                        if(prevState.loading){
-                            // window.scrollTo(0,0)
-                        }
                         if(!response.length){
+                            if(this.state.data.length===0) this.loadNews()
                             return({
                                 endOfThePage: 1,
                                 fetching: 0,
@@ -303,17 +290,17 @@ class Main extends React.Component{
                     if((window.pageYOffset + window.innerHeight) === document.body.scrollHeight){
                         this.fun()
                     }
-                } else if(response.error==="wrong token"){
+                } else if(response.error==="access token expired"){
+                    console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    this.setState({fetching: 0})
+                    refreshFunction(fun)
+                } else {
                     //=========FIX THIS
                     cookies.remove("username", { path: '/'});
                     cookies.remove("access_token", { path: '/'});
                     cookies.remove("refresh_token", { path: '/'});
                     cookies.remove("admin", { path: '/'});
                     window.location = "/";
-                } else {
-                    console.log("НА ВЗЛЕТ ЕБАТЬ");
-                    this.setState({fetching: 0})
-                    refreshFunction(fun)
                 }
             })
             .catch(error=>{console.log(error)})
@@ -364,9 +351,19 @@ class Main extends React.Component{
         if(window.innerWidth/2 > e.clientX){
             let shit = Math.sqrt((window.innerWidth/2 - e.clientX))
             document.querySelector(".posterText>.wow").style.left = "-" + shit + "px";
+            
+            let y = shit/3;
+            let x = window.innerHeight/2 > e.clientY ? 
+                Math.sqrt((window.innerHeight/2 - e.clientY))/2 : -Math.sqrt(Math.abs(window.innerHeight/2 - e.clientY))/2;
+            document.querySelector(".posterText>.wow").style.transform = `perspective(1000px) rotateY(-${y}deg) rotateX(${x}deg)`;
         } else {
             let shit = Math.sqrt(Math.abs(window.innerWidth/2 - e.clientX))
             document.querySelector(".posterText>.wow").style.left = "+" + shit + "px";
+
+            let y = shit/3;
+            let x = window.innerHeight/2 > e.clientY ? 
+                Math.sqrt((window.innerHeight/2 - e.clientY))/2 : -Math.sqrt(Math.abs(window.innerHeight/2 - e.clientY))/2;
+            document.querySelector(".posterText>.wow").style.transform = `perspective(1000px) rotateY(${y}deg) rotateX(${x}deg)`;
         }
 
         if(window.innerHeight/2 > e.clientY){

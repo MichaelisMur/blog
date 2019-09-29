@@ -53,16 +53,22 @@ export default class Comment extends React.Component{
                 }
             }).then(response => response.json())
             .then(data => {
-                if(data.error==="access token expired"){
-                    refreshFunction(fun)
-                } else if(data.error){
-                    console.log(data.error)
-                } else {
+                if(!data.error) {
                     this.setState({
                         deleted: data.deleted,
                         visible: false,
                         fetching: false
                     })
+                } else if(data.error==="access token expired"){
+                    refreshFunction(fun)
+                } else{
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    cookies.remove("vip", { path: '/'});
+                    window.location = "/";
                 }
                 this.setState({
                     visible: false
@@ -91,7 +97,13 @@ export default class Comment extends React.Component{
                 if(data.error==="access token expired"){
                     refreshFunction(fun)
                 } else if(data.error){
-                    console.log(data.error)
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    cookies.remove("vip", { path: '/'});
+                    window.location = "/";
                 } else {
                     this.setState({
                         visible: false,

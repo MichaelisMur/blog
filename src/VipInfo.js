@@ -5,16 +5,16 @@ const VipInfo = (props) => {
         let sign;
         switch(props.code){
             case 0:
-                sign = "Непосвященным отображается весь пост";
+                sign = "shown to everyone";
                 break
             case 1:
-                sign = "Непосвященные видят все кроме комментов";
+                sign = "plebeians cannot see comments";
                 break
             case 2:
-                sign = "Непосвященные видят только картинку";
+                sign = "plebeians see pic only";
                 break
             case 3:
-                sign = "Пост доступен только посвященным";
+                sign = "post for ilitka only :3";
                 break
             default:
         }

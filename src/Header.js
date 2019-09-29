@@ -1,8 +1,8 @@
-import React from 'react';
-import HeaderButton from './HeaderButton';
-import Logout from './Logout';
-import User from './User';
-import Cookies from 'universal-cookie';
+import React from 'react'
+import HeaderButton from './HeaderButton'
+import Logout from './Logout'
+import User from './User'
+import Cookies from 'universal-cookie'
 import {Link} from 'react-router-dom'
 const cookies = new Cookies();
 
@@ -150,9 +150,20 @@ class Header extends React.Component{
                                                 onMouseOver={this.mouseOver}
                                                 onMouseOut={this.mouseOut}
                                             >
-                                                {/* <Link to="/stat">
-                                                    Settings<div className="UserMenuButtonsLine"></div>
-                                                </Link> */}
+                                                <Link to="/news">
+                                                    News<div className="UserMenuButtonsLine"></div>
+                                                </Link>
+                                                
+                                            </div>
+                                        </div>
+                                        <div className="UserMenuButtons" style={{display: cookies.get("admin")?"block":"none"}}>
+                                            <div className="UserMenuButtonsText"
+                                                onMouseOver={this.mouseOver}
+                                                onMouseOut={this.mouseOut}
+                                            >
+                                                <Link to="/new">
+                                                    Add post<div className="UserMenuButtonsLine"></div>
+                                                </Link>
                                                 
                                             </div>
                                         </div>

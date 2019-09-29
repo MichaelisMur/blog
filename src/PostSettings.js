@@ -59,6 +59,13 @@ export default class PostSettings extends React.Component{
                     this.setState({
                         shown: true
                     })
+                } else {
+                    //=========FIX THIS
+                    cookies.remove("username", { path: '/'});
+                    cookies.remove("access_token", { path: '/'});
+                    cookies.remove("refresh_token", { path: '/'});
+                    cookies.remove("admin", { path: '/'});
+                    window.location = "/";
                 }
             })
             .catch(error => console.error('Error:', error));

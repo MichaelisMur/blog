@@ -10,6 +10,7 @@ const Logout = (props) => {
                 cookies.remove("access_token", { path: '/'});
                 cookies.remove("refresh_token", { path: '/'});
                 cookies.remove("admin", { path: '/'});
+                cookies.remove("vip", { path: '/'});
                 window.location = "/";
             }}
         >

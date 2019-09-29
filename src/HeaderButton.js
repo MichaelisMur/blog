@@ -8,7 +8,7 @@ const HeaderButton = (props) => {
                     window.scrollTo({ top: 0})
             }}
         >
-            <div className="headerPart"
+            <div className="headerPart enlargeCursor"
                 onMouseOver={props.mouseOver}
                 onMouseOut={props.mouseOut}
             >

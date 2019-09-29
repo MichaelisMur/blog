@@ -26,7 +26,7 @@ const Post202 = (props) => {
                     <div className="restrictedComs">
                         <img className="restrictedImg" src="http://localhost:3001/public/lock.png" alt="restircted" />
                         <div className="restrictedLine">
-                            This post's comment section is not availible for you. Sorry ;)
+                            This post's comment section is available for the best friends only ^^
                         </div>
                         
                     </div>

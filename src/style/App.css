@@ -2,7 +2,6 @@
     outline: none;
     font-family: Helvetica;
 }
-    
 .Main{
     display: flex;
     width: 900px;
@@ -476,7 +475,6 @@
 .important{
     position: sticky;
     width: 100%;
-    background: white;
     top: 100px;
     border-radius: 3px;
     color: black;
@@ -516,7 +514,8 @@
 .importantShadow{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     padding: 12px 30px 22px;
-    border-radius: 3px
+    border-radius: 3px;
+    background: white;
 }
 .videoContent{
     display: flex;
@@ -646,7 +645,6 @@
     right: 0; 
     margin-left: auto; 
     margin-right: auto;
-    overflow: hidden;
 }
 .posterText .posterTitle{
     /* color: #a3a3a3; */
@@ -654,7 +652,7 @@
     font-size: 50px;
     /* width: 100%; */
     /* border-top: 1px solid white; */
-    border-bottom: 1px solid white;
+    /* border-bottom: 1px solid white; */
     text-align: center;
     padding: 20px 10px
 }
@@ -664,7 +662,7 @@
     font-size: 26px;
     max-width: 80%;
     line-height: 1em;
-    padding: 30px 0;
+    padding: 10px 0;
     text-align: center;
 }
 .posterText .posterButton{
@@ -825,33 +823,65 @@
 }
 .NewsMain{
     width: 900px;
-    background: white;
     margin: auto;
     margin-top: 160px;
     border-radius: 3px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
     padding: 20px 10px;
-    min-height: 1000px;
+    min-height: 600px;
+}
+.NewsBlockPage>h1{
+    text-align: center;
 }
 .NewsBlockPage{
     width: 900px;
-    background: white;
     margin: auto;
     margin-top: 160px;
     border-radius: 3px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px 10px;
+    background: white;
 }
-.newContainer{
+.NewsBlockPage>.knopfen{
+    display: flex;
+    justify-content: center;
+}
+.knopfen div{
+    padding: 20px 10px 0;
+    color: black;
+    font-weight: bold;
+}
+.NewsBlockPage>.body{
+    padding: 10px 20px 20px;
+    min-height: 50px;
+    font-size: 16px;
+}
+.newsBlockPageLine{
+    width: 40%;
+    height: 1px;
+    background: rgb(233, 233, 233);
+    margin: auto;
+}
+.hiddenNewContainer{
     width: 100%;
     padding-bottom: 30px;
     position: relative;
     user-select: none;
+    border-radius: 3px;
+    background: white;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.newContainer{
+    width: 100%;
+    padding-bottom: 20px;
+    position: relative;
+    user-select: none;
+    border-radius: 3px;
 }
 .new>.newText{
     position: absolute;
     top: 60px;
-    height: 80px;
+    height: 60px;
     width: 100%;
     padding: 0 30px;
     display: flex;
@@ -862,10 +892,11 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     transition-duration: 0.5s;
-    height: 160px;
     position: relative;
+    background: white;
+    border-radius: 3px;
 }
 .new>.newTitle{
     padding: 0 30px;
@@ -875,6 +906,15 @@
     display: flex;
     align-items: center;
     z-index: 1;
+}
+.hiddenNewTitle{
+    padding: 0 30px;
+    font-size: 14px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    color: #8f8f8f;
 }
 .new>.newLink{
     padding: 0 20px;
@@ -901,7 +941,7 @@
 }
 .new .newsLink{
     display: inline-block;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     font-weight: bold;
     transition-duration: 0.1s;
 }
@@ -909,7 +949,7 @@
     height: 100%;
     max-height: 40px;
     overflow: hidden;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     pointer-events: none;
 }
 .newsForm{
@@ -998,30 +1038,35 @@
         padding: 20px 0!important;
     }
 }
+.secret a{
+    cursor: none;
+}
 .secret{
     background: black;
     width: 100%;
     height: 1000px;
     min-height: 100vh;
+    cursor: none;
 }
 .secret>.secretLinks{
     width: 100%;
     display: flex;
-    justify-content: space-around;
-    font-size: 30px;
+    justify-content: space-between;
+    font-size: 40px;
     color: white;
     height: 1em;
     align-items: center;
-    padding: 80px 0;
-    height: 250px;
+    max-width: 1600px;
+    margin: auto;
+    padding: 20px 80px;
+    /* height: 250px; */
 }
 .secretLinks div{
     /* width: 300px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    cursor: pointer;
+    padding: 10px 0;
     color: white;
 }
 .secretLinks div>span{
@@ -1029,21 +1074,20 @@
     transition-duration: 0.2s;
 }
 .secretDescription{
-    width: 1100px;
+    width: 100%;
+    max-width: 1600px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     font-size: 36px;
     font-weight: normal;
     color: white;
-    height: 500px;
     margin: auto;
-}
-.secretDescription>div{
-    width: 550px;
-    padding: 40px;
+    padding: 60px 80px;
 }
 .secretDescriptionText{
     line-height: 1em;
+    font-size: 70px;
+    text-align: justify;
 }
 .secretDescriptionPicture{
     display: flex;
@@ -1069,3 +1113,42 @@
     position: relative;
     mix-blend-mode: darken;
 } */
+.secretBack{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    position: relative;
+}
+.secretBack>img{
+    width: 40px;
+    height: 40px;
+    z-index: 2;
+    pointer-events: none;
+    transition-duration: 0.5s!important;
+}
+.pizdec{
+    position: absolute;
+    top: 0;
+    left: 1px;
+    z-index: 100000;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+.pizdec>.pizdos{
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background: white;
+    transition-duration: 0.1s;
+}
+.wowPicture{
+    width: 400px;
+    height: 400px;
+    background: rgba(165, 9, 9, 0.5);
+    position: absolute;
+    top: -100px;
+    pointer-events: none;
+}

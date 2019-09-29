@@ -34,6 +34,7 @@ export default class AddNews extends React.Component{
             .then(response=>{
                 if(!response.error){
                     console.log("success");
+                    window.location = `/news/${response.link}`;
                 } else if(response.error==="access token expired"){
                     console.log("НА ВЗЛЕТ ЕБАТЬ");
                     this.setState({fetching: 0})

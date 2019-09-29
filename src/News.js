@@ -75,14 +75,25 @@ export default class News extends React.Component{
                 >
                 </div>
                 <div className="NewsMain">
-                    {this.state.articles.map((el, key)=>(
-                        <NewsObject 
+                    {this.state.articles.map((el, key)=>{
+                        if(el.hidden) return (
+                            <div className="newContainer">
+                                <div className="new" style={{height: "30px"}}>
+                                    <div className="hiddenNewTitle">
+                                        This post is hidden
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                        let em = el.body.length>200?"...":" "
+                        return(
+                        <NewsObject
                             title={el.title}
-                            body={el.body}
+                            body={el.body.substring(0, 100) + em}
                             link={el.link}
                             key={key}
                         />
-                    ))}
+                    )})}
                 </div>
             </div>
         )

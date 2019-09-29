@@ -77,8 +77,16 @@ export default class Stat extends React.Component{
                 </div>
                 <div className="NewsBlockPage">
                     <h1>{this.state.title}</h1>
-                    <h3>{this.state.body}</h3>
-                    <Link to="/news"><div>Shit go back</div></Link>
+                    <div className="body">{this.state.body}</div>
+                    <div className="newsBlockPageLine"> </div>
+                    <div className="knopfen">
+                        <Link to="/">
+                            <div>Main page</div>
+                        </Link>
+                        <Link to="/news">
+                            <div>All news</div>
+                        </Link>
+                    </div>
                 </div>
             </div>
         )
