@@ -57,7 +57,7 @@ export default class Edit extends React.Component{
                     hiddenColorOpacity: data.hiddenColorOpacity,
                     authCode: data.authCode,
                     unauthCode: data.unauthCode,
-                    audioName: data.audio,
+                    audioName: data.audio || "",
                     img: data.img,
                     comments: data.comments,
                     header: data.header,
@@ -230,9 +230,11 @@ export default class Edit extends React.Component{
                             />
                             <div className="audioDND"
                                 style={{background: this.state.audioDND}}
+                                onDoubleClick={()=>{
+                                    document.querySelector(".newForm>form>.audioInput").click()
+                                }}
                             >
                             </div>
-                            
                             <input placeholder="audioName"
                                 onChange={(e)=>{
                                     this.setState({
@@ -240,6 +242,15 @@ export default class Edit extends React.Component{
                                     })
                                 }}
                                 value={this.state.audioName}
+                            />
+                            
+                            <input type="file" className="audioInput" style={{display: "none"}} 
+                                onChange={(e)=>{
+                                    this.setState({
+                                        audioDND: "red",
+                                        audioFile: e.target.files[0]
+                                    })
+                                }}
                             />
                             <input type="submit" />
                         </form>

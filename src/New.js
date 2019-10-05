@@ -161,11 +161,11 @@ class New extends React.Component{
                         <div className="dnd"
                             style={{background: this.state.DNDstatus}}
                             onDoubleClick={()=>{
-                                document.querySelector(".newForm>input").click()
+                                document.querySelector(".newForm>.picInput").click()
                             }}
                         >
                         </div>
-                        <input type="file" style={{display: "none"}} 
+                        <input type="file" className="picInput" style={{display: "none"}} 
                             onChange={(e)=>{
                                 this.setState({
                                     DNDstatus: "red",
@@ -278,6 +278,9 @@ class New extends React.Component{
                             />
                             <div className="audioDND"
                                 style={{background: this.state.audioDND}}
+                                onDoubleClick={()=>{
+                                    document.querySelector(".newForm>form>.audioInput").click()
+                                }}
                             >
                             </div>
                             
@@ -288,6 +291,15 @@ class New extends React.Component{
                                     })
                                 }}
                                 value={this.state.audioName}
+                            />
+                            
+                            <input type="file" className="audioInput" style={{display: "none"}} 
+                                onChange={(e)=>{
+                                    this.setState({
+                                        audioDND: "red",
+                                        audioFile: e.target.files[0]
+                                    })
+                                }}
                             />
                             <input type="submit" />
                         </form>

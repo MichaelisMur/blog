@@ -25,11 +25,12 @@ class Main extends React.Component{
             toShow: 2,
             endOfThePage: 0,
             fetching: 0,
-            // loading: true,
+            isPictureShown: false,
             playing: null,
             news: [],
             newsLoaded: 0,
-            somethingLoaded: 0
+            somethingLoaded: 0,
+            loadingScreen: 1
         }
         this.fun = this.fun.bind(this);
         this.loadMore = this.loadMore.bind(this);
@@ -43,7 +44,15 @@ class Main extends React.Component{
     }
     render(){
         return(
-            <div className="MainContainer">
+            <div>
+            <div className="bigCurtains" style={{
+                display: this.state.loadingScreen ? "flex": "none"
+            }}>
+                <img src="http://localhost:3001/public/logo.jpg" alt="logo" className="loadingLogo"></img>
+            </div>
+            <div className="MainContainer" style={{
+                opacity: this.state.loadingScreen ? "0": "1"
+            }}>
                 <div className="someSpace">
 
                 </div>
@@ -54,16 +63,32 @@ class Main extends React.Component{
                 </div> */}
                     <div className="posterText">
                         <div className="wow">
-                            {/* <div className="wowPicture">
 
-                            </div> */}
                             <div className="posterTitle">
-                                Mikhail Murashkin's Personal Blog
+                                Ah shit, here we go again..
                             </div>
                             <div className="posterInfo">
-                                <div>This is the place where I shitpost</div><div>
-                                Here you can find photos of <span>
+                                <div>This is my self-written shitpost platform</div><div>
+                                Here you can find photos of <span
+                                    style={{padding: "3px", color: "lightgrey", position: "relative"}}
+                                    onMouseOver={()=>{
+                                        this.setState({
+                                            isPictureShown: true
+                                        })
+                                    }}
+                                    onMouseLeave={()=>{
+                                        this.setState({
+                                            isPictureShown: false
+                                        })
+                                    }}
+                                >
                                     me
+                                    {/* <div className="wowPicture" style={{
+                                        width: this.state.isPictureShown ? "200px" : "0",
+                                        height: this.state.isPictureShown ? "200px" : "0",
+                                    }}>
+
+                                    </div> */}
                                 </span> and my ugly friends, some music 
                                 maybe and an enormous amount
                                 of useful information
@@ -245,7 +270,8 @@ class Main extends React.Component{
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
+            </div>
         )
     }
     fun(){
@@ -265,16 +291,18 @@ class Main extends React.Component{
                 }
             }).then(res=>res.json())
             .then(response=>{
-                // console.log(response)
                 if(!response.error){
                     if(!this._isMounted) return
                     this.setState(prevState=>{
                         if(!response.length){
-                            if(this.state.data.length===0) this.loadNews()
+                            if(this.state.data.length===0){
+                                this.loadNews()
+                            }
                             return({
                                 endOfThePage: 1,
                                 fetching: 0,
-                                loading: false
+                                loading: false,
+                                loadingScreen: 0
                             })
                         }
                         let temp = [...prevState.data, ...response];
@@ -283,7 +311,8 @@ class Main extends React.Component{
                             index: prevState.index + prevState.toShow,
                             data: temp,
                             fetching: 0,
-                            loading: false
+                            loading: false,
+                            loadingScreen: 0
                         })
                     })
                     
@@ -385,13 +414,13 @@ class Main extends React.Component{
         document.querySelector(".posterText .posterButtonSign").style.color = "white";
     }
     parallax(e){
-        // console.log(window.pageYOffset);
         document.querySelector(".Poster").style.top = window.pageYOffset*0.4 + "px";
     }
     componentDidMount(){
         this._isMounted = true;
         this.turnOffAnimation()
         this.parallax()
+        document.querySelector(".loadingLogo").style.opacity = 1;
         window.addEventListener("resize", this.turnOffAnimation)
         window.addEventListener("scroll", this.loadMore)
         if(window.innerWidth>=1100) window.addEventListener("mousemove", this.damn)

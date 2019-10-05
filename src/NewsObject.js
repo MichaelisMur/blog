@@ -50,7 +50,7 @@ export default class NewsObject extends React.Component{
                                 transitionDelay: this.state.height === "60px" ? "0s" : "0.1s"
                             }}
                         >
-                            <Link onClick={()=>{console.log()}} to={`/news/${this.props.link}`}>Open up</Link>
+                            <Link to={`/news/${this.props.link}`}>Open up</Link>
                         </div>
                     </div>
                 </div>

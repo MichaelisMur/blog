@@ -6,7 +6,8 @@ export default class Secret extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            scrollTop: 0
+            scrollTop: 0,
+            loaded: 0
         }
         this.myRef = React.createRef();
         this.cursor = this.cursor.bind(this);
@@ -29,7 +30,8 @@ export default class Secret extends React.Component{
     
     render(){
         return(
-            <Scrollbars style={{ width: "100%", height: "100vh", backgroundColor: "red" }}
+            <Scrollbars style={{ width: "100%", height: "100vh", backgroundColor: "black",
+            opacity: this.state.loaded ? 1 : 0, transitionDuration: "0.5s" }}
                 renderThumbVertical={() =>
                     (<div style={{ backgroundColor: 'white', width: '4px', opacity: '0.5', borderRadius: "5px", cursor: "pointer"}} />)
                 }
@@ -38,8 +40,13 @@ export default class Secret extends React.Component{
                         scrollTop: e.target.scrollTop
                     })
                 }}
-            >
+                onLoadCapture={()=>{
+                    this.setState({
+                        loaded: 1
+                    })
+                }}
                 
+            >
                 <div className="pizdec anima" ref={this.myRef}>
                     <div className="pizdos">
 
@@ -133,7 +140,6 @@ export default class Secret extends React.Component{
     cursor(e){
         let pizdec = this.myRef.current;
         pizdec.style.left = e.clientX - 15 + "px";
-        console.log(this.state.scrollTop)
         pizdec.style.top = e.clientY + this.state.scrollTop + window.pageYOffset -15 + "px";
     }
     componentDidMount(){

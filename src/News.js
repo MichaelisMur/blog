@@ -3,7 +3,6 @@ import Header from './Header'
 import NewsObject from './NewsObject'
 import Refresh from './Refresh'
 import Cookies from 'universal-cookie'
-import {Icon} from 'semantic-ui-react'
 const cookies = new Cookies()
 
 export default class News extends React.Component{
@@ -57,14 +56,15 @@ export default class News extends React.Component{
     render(){
         return(
             <div>
-                <div className="loadingCurtains"
-                    style={{
-                        display: this.state.loading ? "flex" : "none"
-                    }}
-                >
-                    <Icon size='large' loading name='spinner' />
-                    loading...
+                <div className="bigCurtains" style={{
+                    display: this.state.loading ? "flex" : "none"
+                }}>
+                    <img src="http://localhost:3001/public/logo.jpg" alt="logo" className="loadingLogo"></img>
                 </div>
+            <div style={{
+                transitionDuration: "0.3s",
+                opacity: this.state.loading ? "0" : "1"
+            }}>
                 <Header 
                     line={1}
                 />
@@ -77,10 +77,16 @@ export default class News extends React.Component{
                 <div className="NewsMain">
                     {this.state.articles.map((el, key)=>{
                         if(el.hidden) return (
-                            <div className="newContainer">
-                                <div className="new" style={{height: "30px"}}>
+                            <div className="newContainer" key={key}>
+                                <div className="new" style={{
+                                        // height: "30px", display: "flex", "justifyContent": "center", width: "30%", margin: "auto"
+                                    }}>
+                                    <div className="newTitle" style={{}}>
+                                        {el.title}
+                                    </div>
                                     <div className="hiddenNewTitle">
-                                        This post is hidden
+                                        This one is hidden for you
+                                        <img className="restrictedNews" src="http://localhost:3001/public/lock_grey.png" alt="restircted" />
                                     </div>
                                 </div>
                             </div>
@@ -96,12 +102,14 @@ export default class News extends React.Component{
                     )})}
                 </div>
             </div>
+            </div>
         )
     }
     parallax(e){
         document.querySelector(".Poster").style.top = window.pageYOffset*0.4 + "px";
     }
     componentDidMount(){
+        document.querySelector(".loadingLogo").style.opacity = 1;
         this.parallax()
         window.addEventListener("scroll", this.parallax)
     }

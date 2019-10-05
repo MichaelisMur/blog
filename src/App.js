@@ -15,6 +15,7 @@ import News from './News'
 import NewsPage from './NewsPage'
 import Secret from './Secret'
 import AddNews from './AddNews'
+import EditNewsPage from './EditNews'
 import {Switch, Route} from 'react-router-dom'
 
 class HomePage extends React.Component{
@@ -66,6 +67,7 @@ class App extends React.Component{
           <Route path="/audio" component={Audio} />
           <Route path="/edit/:id" component={Edit} />
           <Route path="/news/:link" component={NewsPage} />
+          <Route path="/editnews/:link" component={EditNewsPage} />
           <Route path="/news" component={News} />
           <Route path="/addnews" component={AddNews} />
           <Route path="/secret" component={Secret} />

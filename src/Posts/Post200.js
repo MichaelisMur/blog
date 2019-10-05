@@ -19,7 +19,21 @@ const Post200 = (props) => {
                             <div className="postSettings">
                                 <PostSettings id={props.post_id} />
                                 <VipInfo code={props.vip ? props.authCode : undefined} />
-                                <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank">Full size</a>
+                                <a href={`http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`} target="blank"
+                                    onClick={()=>{
+                                        fetch("http://localhost:3001/fullsized", {
+                                            method: "POST",
+                                            body: JSON.stringify({
+                                                post: `http://localhost:3001/public/source/${props.post_id}_${props.img}.jpg`,
+                                            }),
+                                            headers: {
+                                                "Content-Type": "application/json"
+                                            }
+                                        })
+                                    }}
+                                >
+                                    Full size
+                                </a>
                             </div>
                         </div>
                         <Picture

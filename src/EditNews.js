@@ -3,7 +3,6 @@ import Header from './Header'
 import Refresh from './Refresh'
 import Cookies from 'universal-cookie'
 import {Link} from 'react-router-dom'
-// import {Icon} from 'semantic-ui-react'
 const cookies = new Cookies()
 
 export default class Stat extends React.Component{
@@ -14,11 +13,13 @@ export default class Stat extends React.Component{
             body: "",
             loading: 1,
             link: props.match.params.link,
-            deleted: 0
+            newLink: props.match.params.link,
+            deleted: 0,
+            vip: ""
         }
-        this.toggle = this.toggle.bind(this)
     }
     componentWillMount(){
+        if(!cookies.get("admin")) return window.location = "/news"
         const fun = (refreshFunction) => {
             fetch("http://localhost:3001/getarticle", {
                 method: "POST",
@@ -37,6 +38,7 @@ export default class Stat extends React.Component{
                         title: response.title,
                         body: response.body,
                         deleted: response.deleted,
+                        vip: response.vip,
                         loading: 0
                     })
                 } else if(response.error==="access token expired"){
@@ -58,15 +60,18 @@ export default class Stat extends React.Component{
         }
         Refresh(fun);
     }
-    toggle(){
+    fun(){
         const fun = (refreshFunction) => {
-            fetch(`http://localhost:3001/togglenews`, {
+            fetch("http://localhost:3001/editnews", {
                 method: "POST",
                 body: JSON.stringify({
                     username: cookies.get("username"),
                     access_token: cookies.get("access_token"),
-                    link: this.state.link,
-                    deleted: this.state.deleted
+                    link: this.props.match.params.link,
+                    title: this.state.title,
+                    body: this.state.body,
+                    newLink: this.state.newLink,
+                    vip: this.state.vip
                 }),
                 headers: {
                     "Content-Type": "application/json"
@@ -74,11 +79,10 @@ export default class Stat extends React.Component{
             }).then(res=>res.json())
             .then(response=>{
                 if(!response.error){
-                    this.setState({
-                        deleted: response.deleted
-                    })
+                    window.location = `/news/${response.link}`
                 } else if(response.error==="access token expired"){
                     console.log("НА ВЗЛЕТ ЕБАТЬ");
+                    this.setState({fetching: 0})
                     refreshFunction(fun)
                 } else if(response.error==="no admin"){
                     window.location = "/news"
@@ -116,42 +120,60 @@ export default class Stat extends React.Component{
                         }}
                     >
                     </div>
-                    <div className="NewsBlockPage">
-                        <h1>{this.state.title}</h1>
-                        <div className="body">{this.state.body}</div>
-                        <div className="newsBlockPageLine"> </div>
-                        <div className="knopfen">
-                            <Link to="/">
-                                <div>Main page</div>
-                            </Link>
-                            <Link to="/news">
-                                <div>All news</div>
-                            </Link>
-                            
-                            <img src={!this.state.deleted ?
-                                "http://localhost:3001/public/delete.png" :
-                                "http://localhost:3001/public/restore.png"} alt="del"
-                                style={{
-                                    display: cookies.get("admin")?"block":"none",
-                                    width: "40px",
-                                    height: "40px",
-                                    cursor: "pointer"
+                    <div className="newsForm"
+                        style={{
+                            boxShadow: "0 0 5px rgba(0, 0, 0, 0.5)"
+                        }}
+                    >
+                        <form
+                            onSubmit={(e)=>{
+                                e.preventDefault();
+                                this.fun()
+                            }}
+                        >
+                            <label>title</label>
+                            <input placeholder="Title"
+                                onChange={(e)=>{
+                                    this.setState({
+                                        title: e.target.value,
+                                        newLink: e.target.value.toLowerCase().split(' ').join("-").replace(/[^a-zA-Z--]+/g, '')
+                                    })
                                 }}
-                                onClick={this.toggle}
+                                value={this.state.title}
                             />
-
-                            <Link to={`/editnews/${this.state.link}`}
-                                style={{    
-                                    display: cookies.get("admin") ? "block" : "none"
+                            <label>link</label>
+                            <input placeholder="link"
+                                onChange={(e)=>{
+                                    this.setState({
+                                        newLink: e.target.value
+                                    })
                                 }}
-                            >
-                                <img src="http://localhost:3001/public/settings.png" alt="edit"
-                                    style={{
-                                        display: cookies.get("admin")?"block":"none",
-                                        width: "40px",
-                                        height: "40px",
-                                    }}
-                                />
+                                value={this.state.newLink}
+                            />
+                            <label>body</label>
+                            <textarea placeholder="Body" style={{resize: "none", height: "100px"}}
+                                onChange={(e)=>{
+                                    this.setState({
+                                        body: e.target.value
+                                    })
+                                }}
+                                value={this.state.body}
+                            />
+                            <label>vip</label>
+                            <input placeholder="vip"
+                                onChange={(e)=>{
+                                    this.setState({
+                                        vip: e.target.value
+                                    })
+                                }}
+                                value={this.state.vip}
+                            />
+                            <input type="submit"/>
+                        </form>
+                    
+                        <div className="knopfen">
+                            <Link to={`/news/${this.state.link}`}>
+                                <div>Back</div>
                             </Link>
                         </div>
                     </div>
@@ -160,10 +182,6 @@ export default class Stat extends React.Component{
             </div>
         )
     }
-    // parallax(e){
-    //     // console.log(window.pageYOffset);
-    //     document.querySelector(".Poster").style.top = window.pageYOffset*0.4 + "px";
-    // }
     componentDidMount(){
         document.querySelector(".loadingLogo").style.opacity = 1;
     }
